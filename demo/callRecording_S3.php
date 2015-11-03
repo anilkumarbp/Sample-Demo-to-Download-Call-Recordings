@@ -17,8 +17,8 @@ require_once(__DIR__ . '/_bootstrap.php');
 
         // Create the S3 Client
         $client = S3Client::factory(array(
-        'key' => 'AKIAIR2SPCAMLLDOVGYA',
-        'secret' => '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',
+        'key' => $credentials['amazonAccessKey'],
+        'secret' => $credentials['amazonSecretKey'],
         'command.params' => ['PathStyle' => true]
         ));
         
