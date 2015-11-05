@@ -8,13 +8,6 @@ require('vendor/autoload.php');
 
 
 
-if (!$argv || !in_array('skipSMS', $argv)) {
-	print "Test 1: sms.php\n";
-    require(__DIR__ . '/demo/sms.php');
-} else {
-	print "Test 1: sms.php - skipping...\n";
-}
-
 if (!$argv || !in_array('skipCallLog', $argv)) {
 	print "Test 2: call_log.php\n";
     require(__DIR__ . '/demo/call_log.php');

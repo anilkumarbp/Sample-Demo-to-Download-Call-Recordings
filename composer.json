@@ -1,6 +1,43 @@
 {
-    "require": {
-        "ringcentral/ringcentral-php": "^1.1",
-        "aws/aws-sdk-php": "2.*"
+  "name": "ringcentral-recordings-downloader",
+  "type": "library",
+  "description": "RingCentral Connect Platform Call Log Downloader",
+  "keywords": [
+    "php",
+    "sdk",
+    "ringcentral",
+    "connect",
+    "platform",
+    "api"
+  ],
+  "homepage": "http://developers.ringcentral.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Anil Kumar",
+      "email": "anil.kumar@ringcentral.com"
+    },
+    {
+      "name": "RingCentral, Inc.",
+      "email": "devsupport@ringcentral.com"
     }
+  ],
+  "require": {
+    "ext-curl": "*",
+    "php": ">=5.3.29",
+    "ringcentral/psr7": "^1.2.0",
+    "pubnub/pubnub": "~3.7",
+    "symfony/event-dispatcher": "^2.7",
+    "ringcentral/ringcentral-php": "^1.1",	
+    "aws/aws-sdk-php": "2.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "satooshi/php-coveralls": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "RingCentral\\SDK\\": "src/"
+    }
+  }
 }

@@ -128,7 +128,7 @@ require_once(__DIR__ . '/_bootstrap.php');
           // Check if there is next Page
           if(isset($apiResponseJSONArray["navigation"]["nextPage"])) {  
 
-                    sleep(60);
+                    sleep(6);
 
                     $pageCount = $pageCount + 1;
                 
