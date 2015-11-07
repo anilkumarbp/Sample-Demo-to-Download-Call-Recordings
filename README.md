@@ -11,6 +11,10 @@ Sample PHP command line application to : Generate Call Records ( with / without 
 
 1. Download [PHAR file](https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader/releases/tag/0.1.0)
 
+```bash
+wget https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader/releases/download/0.1.0/RC_CallRecordings_Download.phar
+```
+
 2. Create a config.json file with the contents as shown below : Enter the details
 
 
@@ -35,7 +39,11 @@ Sample PHP command line application to : Generate Call Records ( with / without 
 }
 ```
 
-3. CD into the terminal and type : php {name of the PHAR file downloaded}
+3. CD into the terminal and type:
+
+```php
+php RC_CallRecordings_Download.phar
+```
 
 ## Clone the Repo
 
