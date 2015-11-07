@@ -35,7 +35,7 @@ Sample PHP command line application to : Generate Call Records ( with / without 
 }
 ```
 
-3. CD into the terminal and type : php {PHAR file downloaded}
+3. CD into the terminal and type : php {name of the PHAR file downloaded}
 
 ## Clone the Repo
 
