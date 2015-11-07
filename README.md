@@ -28,7 +28,7 @@ $ wget https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Down
 	"password": "",				// password
 	"fromPhoneNumber": "",			// Announcements only extension
 	"toPhoneNumber": "",			// Announcements only extension
-	"dateFrom": "xxxx-xx-xx",		// dateFrom {single Day}
+	"dateFrom": "YYYY-MM-DD",		// dateFrom {single Day}
 	"callRecordingsCount": "",  		// No of call recordings generator 
 	"amazonAccessKey": "",			// Amazon Access Key
 	"amazonSecretKey": "",			// Amazon Secret Key
