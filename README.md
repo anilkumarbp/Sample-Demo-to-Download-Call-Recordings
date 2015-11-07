@@ -13,6 +13,7 @@ Sample PHP command line application to : Generate Call Records ( with / without 
 
 2. Create a config.json file with the contents as shown below : Enter the details
 
+
 ```php
 {
 	"appKey": "", 			 	// app key       
@@ -33,8 +34,8 @@ Sample PHP command line application to : Generate Call Records ( with / without 
 	"skipDownloadS3": ""			// True to skip Upload to S3
 }
 ```
-3. CD into the terminal and type : php {PHAR file downloaded}
 
+3. CD into the terminal and type : php {PHAR file downloaded}
 
 ## Clone the Repo
 
