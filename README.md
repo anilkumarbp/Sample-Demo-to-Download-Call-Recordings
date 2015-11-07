@@ -7,6 +7,34 @@ Sample PHP command line application to : Generate Call Records ( with / without 
 
 # Installation
 
+## PHAR with bundled dependencies
+
+1. Download [PHAR file](https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader/releases/tag/0.1.0)
+
+2. Create a config.json file with the contents as shown below : Enter the details
+
+```php
+{
+	"appKey": "", 			 	// app key       
+	"appSecret": "",			// app secret
+	"server": "",             		// sandbox :  https://platform.devtest.ringcentral.com  production : https://platform.ringcentral.com
+	"username": "",				// username
+	"extension": "",			// extension
+	"password": "",				// password
+	"fromPhoneNumber": "",			// Announcements only extension
+	"toPhoneNumber": "",			// Announcements only extension
+	"dateFrom": "xxxx-xx-xx",		// dateFrom {single Day}
+	"callRecordingsCount": "",  		// No of call recordings generator 
+	"amazonAccessKey": "",			// Amazon Access Key
+	"amazonSecretKey": "",			// Amazon Secret Key
+	"skipCallLog": "",			// True to skip call-log
+	"skipRingOut": "",			// True to skip Ring-Out
+	"skipDownload": "",			// True to skip Download
+	"skipDownloadS3": ""			// True to skip Upload to S3
+}
+```
+3. CD into the terminal and type : php {PHAR file downloaded}
+
 
 ## Clone the Repo
 
@@ -63,16 +91,20 @@ Clone the repo and update the file `demo/_credentials.json`:
 {
 	"appKey": "", 			 	// app key       
 	"appSecret": "",			// app secret
-	"server": "",             	// sandbox :  https://platform.devtest.ringcentral.com  production : https://platform.ringcentral.com
+	"server": "",             		// sandbox :  https://platform.devtest.ringcentral.com  production : https://platform.ringcentral.com
 	"username": "",				// username
 	"extension": "",			// extension
 	"password": "",				// password
-	"fromPhoneNumber": "",		// Announcements only extension
-	"toPhoneNumber": "",		// Announcements only extension
-	"dateFrom": "xxxx-xx-xx",	// dateFrom {single Day}
-	"callRecordingsCount": "",  // No of call recordings generator 
-	"amazonAccessKey": "",		// Amazon Access Key
-	"amazonSecretKey": ""		// Amazon Secret Key
+	"fromPhoneNumber": "",			// Announcements only extension
+	"toPhoneNumber": "",			// Announcements only extension
+	"dateFrom": "xxxx-xx-xx",		// dateFrom {single Day}
+	"callRecordingsCount": "",  		// No of call recordings generator 
+	"amazonAccessKey": "",			// Amazon Access Key
+	"amazonSecretKey": "",			// Amazon Secret Key
+	"skipCallLog": "",			// True to skip call-log
+	"skipRingOut": "",			// True to skip Ring-Out
+	"skipDownload": "",			// True to skip Download
+	"skipDownloadS3": ""			// True to skip Upload to S3
 }
 ```
 
