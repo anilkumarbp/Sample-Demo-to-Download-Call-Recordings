@@ -1,6 +1,12 @@
 # RingCentral-Call-Generator-Recordings-Downloader
 Sample PHP command line application to : Generate Call Records ( with / without Recordings ) , download call logs , upload recordings to Amazon S3 Bucket.
 
+**EBookPublisher** project
+
+- [EBookPublisher.xml](https://github.com/OfficeDev/PowerPoint-Add-in-JavaScript-SliceDataChunks/blob/master/EBookPublisher/EBookPublisherManifest/EBookPublisher.xml): The manifest file for the PowerPoint add-in.  
+- [Adventure Works.ppt](https://github.com/OfficeDev/PowerPoint-Add-in-JavaScript-SliceDataChunks/blob/master/EBookPublisher/Adventure%20Works.pptx): Start Document with 1,024 slides. 
+ 
+
 # Requirements
 
 - PHP 5.3.29+
@@ -127,3 +133,4 @@ $ php index.php ./demo/_credentials.json *
 * skipDownloadS3 - to skip uploading the recordings to S3 Bucket
 
 Please take a look in `demo` folder to see all the demo scripts.
+
