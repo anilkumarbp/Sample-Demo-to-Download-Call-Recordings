@@ -71,9 +71,9 @@ require_once(__DIR__ . '/_bootstrap.php');
         $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
                                      'type'          => 'Voice',
                                      'withRecording' => 'True',
-                                     'dateFrom' => $credentials['dateFrom'] . 'T00:00:00',
-                                     'dateTo' => $credentials['dateFrom'] . 'T23:59:59',
-                                     'perPage' => 100,
+                                     'dateFrom' => $credentials['dateFrom'] . 'T' . $timeFrom,
+                                     'dateTo' => $credentials['dateFrom'] . 'T' . $timeTo,
+                                     'perPage' => 300,
                                      'page' => $pageCount
                                      ));
 
