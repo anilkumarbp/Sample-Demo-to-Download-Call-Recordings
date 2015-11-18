@@ -10,8 +10,9 @@ require_once(__DIR__ . '/_bootstrap.php');
 
  try {
 
-        $credentials_file = count($argv) > 1 
-        ? $argv[1] : __DIR__ . '/_credentials.json';
+        $credentials_file = './config.json';
+        // $credentials_file = count($argv) > 1 
+        // ? $argv[1] : __DIR__ . '/_credentials.json';
 
         $credentials = json_decode(file_get_contents($credentials_file), true);
 
@@ -52,7 +53,7 @@ require_once(__DIR__ . '/_bootstrap.php');
         
 
         // Find call log records with recordings
-        $csvDir = __DIR__ . DIRECTORY_SEPARATOR . 'Csv/' . $dir;
+        $csvDir = 'Csv/' . $dir;
 
         if (!file_exists($csvDir)) {
             mkdir($csvDir, 0777, true);
@@ -136,7 +137,14 @@ require_once(__DIR__ . '/_bootstrap.php');
                 
             }
         else {
-          $flag = False;
+          if($timeTo != '23:59:59' ) {
+            $timeFrom = $timeTo
+            $timeTo = strtotime("+30 minutes", strtotime($timeFrom)) 
+          }
+          else {
+            $flag = False;
+          }
+          
         }
         fclose($file);
         }

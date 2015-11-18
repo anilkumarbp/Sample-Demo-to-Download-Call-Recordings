@@ -55,15 +55,20 @@ require_once(__DIR__ . '/_bootstrap.php');
           fputcsv($file, $fileHeaders);
           $fileContents = array();
 
+        // dateFrom and dateTo paramteres
+        $timeFrom = '00:00:00'
+        $timeTo = '00:29:59'
         // Find call log records with recordings
         while($flag) {
         
+
+
         $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
                                      'type'          => 'Voice',
                                      'withRecording' => 'True',
-                                     'dateFrom' => $credentials['dateFrom'] . 'T00:00:00',
-                                     'dateTo' => $credentials['dateFrom'] . 'T23:59:59',
-                                     'perPage' => 100,
+                                     'dateFrom' => $credentials['dateFrom'] . 'T' . $timeFrom,
+                                     'dateTo' => $credentials['dateFrom'] . 'T' . $timeTo,
+                                     'perPage' => 300,
                                      'page' => $pageCount
                                      ));
                                    
@@ -134,8 +139,17 @@ require_once(__DIR__ . '/_bootstrap.php');
                 
             }
         else {
-          $flag = False;
+            // Increment the time interval by next 30 min
+            if($timeTo != '23:59:59' ) {
+              $timeFrom = $timeTo
+              $timeTo = strtotime("+30 minutes", strtotime($timeFrom)) 
+            }
+            else {
+              $flag = False;
+            }
+
         }
+
 
       }
 
