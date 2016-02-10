@@ -102,6 +102,12 @@ require(__DIR__ . '/demo/callRecording_Dropbox.php');
 Aim : Save the call-recordings to your Dropbox Application. Creates a directory called "Recordings" and the recordings are stored as .mp3 / .wav format.
 Pre-requisite : Before you initiate the callRecording_Dropbox.php make sure to pass the "key" and "secret" within the configuration file ( ./demo/_credentialsSample.json )
 
+```php
+{
+	"key": "", 			 	// Dropbox app key       
+	"secret": ""			// Dropbox app secret
+}
+```
 
 
 # How to demo?
