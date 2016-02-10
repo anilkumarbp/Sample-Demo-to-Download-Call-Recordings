@@ -5,7 +5,14 @@ use \Pubnub\PubnubException;
 
 class StateTest extends TestCase
 {
-    protected $channel = 'pubnub_php_test_state';
+    protected $channel;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->channel = 'pubnub_php_test_state-' . rand();
+    }
 
     /**
      * @group state
@@ -43,14 +50,18 @@ class StateTest extends TestCase
     {
         $uuid = 'some_other_uuid';
         $group = 'ptest-' . rand();
-        $channels = array('ptest1', 'ptest2');
+        $channels = array('ptest1-' . rand());
         $state = array('name' => 'Nick', 'status' => 'busy');
 
         $this->pubnub->channelGroupAddChannel($group, $channels);
 
+        sleep(1);
+
         $this->pubnub->setChannelGroupState($group, $state, $uuid);
 
-        $result = $this->pubnub->getState($channels[1], $uuid);
+        sleep(1);
+
+        $result = $this->pubnub->getState($channels[0], $uuid);
 
         $this->assertEquals($state['name'], $result['payload']['name']);
         $this->assertEquals($state['status'], $result['payload']['status']);

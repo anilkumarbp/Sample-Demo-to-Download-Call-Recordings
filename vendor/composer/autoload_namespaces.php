@@ -6,8 +6,12 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
     'Pubnub\\' => array($vendorDir . '/pubnub/pubnub/composer/lib'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log'),
+    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
+    'Dropbox' => array($vendorDir . '/dropbox/dropbox-sdk/lib'),
     'Aws' => array($vendorDir . '/aws/aws-sdk-php/src'),
 );

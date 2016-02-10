@@ -39,8 +39,15 @@ class DefaultClient extends Client
         if ($JSONDecodedResponse != null)
             return $JSONDecodedResponse;
         elseif ($curlError == 28)
-            throw new PubnubException("Pubnub request timeout. Maximum timeout: " . $this->curlTimeout . " seconds" .
-                ". Requested URL: " . $curlResponseURL );
+            return array(
+                'error' => true,
+                'service' => 'cURL',
+                'status' => -1,
+                'message' => 'request timeout',
+                'payload' => "Pubnub request timeout. Maximum timeout: " . $this->curlSubscribeTimeout .
+                    " second(s) for subscribe and " . $this->curlTimeout . " second(s) for non-subscribe requests. " .
+                    "Requested URL: " . $curlResponseURL
+            );
         else
             throw new PubnubException("Empty response from Pubnub. HTTP code: " . $curlResponseCode .
                 ". cURL error code: " . $curlError .

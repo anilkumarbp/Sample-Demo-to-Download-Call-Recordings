@@ -1,3 +1,7 @@
+# PubNub PHP SDK
+
+[![Build Status](https://travis-ci.org/pubnub/php.svg)](https://travis-ci.org/pubnub/php)
+
 ## Contact support@pubnub.com for all questions
 
 #### [PubNub](http://www.pubnub.com) Real-time Data Network
@@ -26,7 +30,7 @@
     ``` json
     {
         "require": {
-            "pubnub/pubnub": "3.7.*"
+            "pubnub/pubnub": "3.8.*"
         }
     }
     ```

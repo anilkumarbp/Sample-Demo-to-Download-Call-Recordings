@@ -34,14 +34,12 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'StatementId' => array(
                     'required' => true,
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 1,
-                    'maxLength' => 100,
                 ),
                 'Action' => array(
                     'required' => true,
@@ -65,7 +63,6 @@ return array (
                     'type' => 'string',
                     'location' => 'query',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
             ),
             'errorResponses' => array(
@@ -106,26 +103,22 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Name' => array(
                     'required' => true,
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
                 'FunctionVersion' => array(
                     'required' => true,
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 1,
-                    'maxLength' => 1024,
                 ),
                 'Description' => array(
                     'type' => 'string',
                     'location' => 'json',
-                    'maxLength' => 256,
                 ),
             ),
             'errorResponses' => array(
@@ -167,7 +160,6 @@ return array (
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Enabled' => array(
                     'type' => 'boolean',
@@ -216,7 +208,6 @@ return array (
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Runtime' => array(
                     'required' => true,
@@ -232,7 +223,6 @@ return array (
                     'required' => true,
                     'type' => 'string',
                     'location' => 'json',
-                    'maxLength' => 128,
                 ),
                 'Code' => array(
                     'required' => true,
@@ -248,24 +238,20 @@ return array (
                         'S3Bucket' => array(
                             'type' => 'string',
                             'minLength' => 3,
-                            'maxLength' => 63,
                         ),
                         'S3Key' => array(
                             'type' => 'string',
                             'minLength' => 1,
-                            'maxLength' => 1024,
                         ),
                         'S3ObjectVersion' => array(
                             'type' => 'string',
                             'minLength' => 1,
-                            'maxLength' => 1024,
                         ),
                     ),
                 ),
                 'Description' => array(
                     'type' => 'string',
                     'location' => 'json',
-                    'maxLength' => 256,
                 ),
                 'Timeout' => array(
                     'type' => 'numeric',
@@ -322,14 +308,12 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Name' => array(
                     'required' => true,
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
             ),
             'errorResponses' => array(
@@ -389,13 +373,11 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Qualifier' => array(
                     'type' => 'string',
                     'location' => 'query',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
             ),
             'errorResponses' => array(
@@ -432,14 +414,12 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Name' => array(
                     'required' => true,
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
             ),
             'errorResponses' => array(
@@ -503,13 +483,11 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Qualifier' => array(
                     'type' => 'string',
                     'location' => 'query',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
             ),
             'errorResponses' => array(
@@ -542,13 +520,11 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Qualifier' => array(
                     'type' => 'string',
                     'location' => 'query',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
             ),
             'errorResponses' => array(
@@ -581,13 +557,11 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Qualifier' => array(
                     'type' => 'string',
                     'location' => 'query',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
             ),
             'errorResponses' => array(
@@ -620,7 +594,6 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'InvocationType' => array(
                     'type' => 'string',
@@ -642,12 +615,12 @@ return array (
                         'string',
                         'object',
                     ),
+                    'location' => 'body',
                 ),
                 'Qualifier' => array(
                     'type' => 'string',
                     'location' => 'query',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
             ),
             'errorResponses' => array(
@@ -692,7 +665,6 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'InvokeArgs' => array(
                     'required' => true,
@@ -730,13 +702,11 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'FunctionVersion' => array(
                     'type' => 'string',
                     'location' => 'query',
                     'minLength' => 1,
-                    'maxLength' => 1024,
                 ),
                 'Marker' => array(
                     'type' => 'string',
@@ -782,7 +752,6 @@ return array (
                     'type' => 'string',
                     'location' => 'query',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Marker' => array(
                     'type' => 'string',
@@ -853,7 +822,6 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Marker' => array(
                     'type' => 'string',
@@ -896,7 +864,6 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'CodeSha256' => array(
                     'type' => 'string',
@@ -905,7 +872,6 @@ return array (
                 'Description' => array(
                     'type' => 'string',
                     'location' => 'json',
-                    'maxLength' => 256,
                 ),
             ),
             'errorResponses' => array(
@@ -942,20 +908,17 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'StatementId' => array(
                     'required' => true,
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 100,
                 ),
                 'Qualifier' => array(
                     'type' => 'string',
                     'location' => 'query',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
             ),
             'errorResponses' => array(
@@ -988,25 +951,21 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Name' => array(
                     'required' => true,
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 128,
                 ),
                 'FunctionVersion' => array(
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 1,
-                    'maxLength' => 1024,
                 ),
                 'Description' => array(
                     'type' => 'string',
                     'location' => 'json',
-                    'maxLength' => 256,
                 ),
             ),
             'errorResponses' => array(
@@ -1043,7 +1002,6 @@ return array (
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Enabled' => array(
                     'type' => 'boolean',
@@ -1091,7 +1049,6 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'ZipFile' => array(
                     'type' => array(
@@ -1103,19 +1060,16 @@ return array (
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 3,
-                    'maxLength' => 63,
                 ),
                 'S3Key' => array(
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 1,
-                    'maxLength' => 1024,
                 ),
                 'S3ObjectVersion' => array(
                     'type' => 'string',
                     'location' => 'json',
                     'minLength' => 1,
-                    'maxLength' => 1024,
                 ),
                 'Publish' => array(
                     'type' => 'boolean',
@@ -1157,7 +1111,6 @@ return array (
                     'type' => 'string',
                     'location' => 'uri',
                     'minLength' => 1,
-                    'maxLength' => 140,
                 ),
                 'Role' => array(
                     'type' => 'string',
@@ -1166,12 +1119,10 @@ return array (
                 'Handler' => array(
                     'type' => 'string',
                     'location' => 'json',
-                    'maxLength' => 128,
                 ),
                 'Description' => array(
                     'type' => 'string',
                     'location' => 'json',
-                    'maxLength' => 256,
                 ),
                 'Timeout' => array(
                     'type' => 'numeric',

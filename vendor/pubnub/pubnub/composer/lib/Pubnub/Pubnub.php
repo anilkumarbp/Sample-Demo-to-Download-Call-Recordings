@@ -51,6 +51,7 @@ class Pubnub
      * @param bool $proxy
      * @param bool $auth_key
      * @param bool $verify_peer
+     * @param bool $gzip
      *
      * @throws PubnubException
      */
@@ -65,7 +66,8 @@ class Pubnub
         $uuid = false,
         $proxy = false,
         $auth_key = false,
-        $verify_peer = true
+        $verify_peer = true,
+        $gzip = false
     ) {
 
         if (is_array($first_argument)) {
@@ -80,6 +82,7 @@ class Pubnub
             $proxy = isset($first_argument['proxy']) ? $first_argument['proxy'] : false;
             $auth_key = isset($first_argument['auth_key']) ? $first_argument['auth_key'] : false;
             $verify_peer = isset($first_argument['verify_peer']) ? $first_argument['verify_peer'] : $verify_peer;
+            $gzip = isset($first_argument['gzip']) ? $first_argument['gzip'] : false;
         } else {
             $publish_key = $first_argument;
         }
@@ -103,8 +106,8 @@ class Pubnub
         $this->AES = new PubnubAES();
         $this->AUTH_KEY = $auth_key;
 
-        $this->defaultClient = new DefaultClient($origin, $ssl, $proxy, $pem_path, $verify_peer);
-        $this->pipelinedClient = new PipelinedClient($origin, $ssl, $proxy, $pem_path, $verify_peer);
+        $this->defaultClient = new DefaultClient($origin, $ssl, $proxy, $pem_path, $verify_peer, $gzip);
+        $this->pipelinedClient = new PipelinedClient($origin, $ssl, $proxy, $pem_path, $verify_peer, $gzip);
 
         if (!$this->AES->isBlank($cipher_key)) {
             $this->CIPHER_KEY = $cipher_key;
@@ -307,7 +310,7 @@ class Pubnub
             'sub_key',
             $this->SUBSCRIBE_KEY,
             'channel',
-            '.',
+            ',',
             'uuid',
             PubnubUtil::url_encode($uuid),
             'data'
@@ -356,31 +359,42 @@ class Pubnub
      * Listen for a message on a channel.
      *
      * @param string $channel for channel name
-     * @param string $callback  for callback definition.
+     * @param string $callback for callback definition.
      * @param int $timeToken for current time token value.
-     * @param bool $presence
+     * @param bool $presence should be set to true in presence requests
+     * @param callable|null $timeoutHandler to invoke on timeout event
      *
      * @throws PubnubException
      */
-    public function subscribe($channel, $callback, $timeToken = 0, $presence = false)
+    public function subscribe($channel, $callback, $timeToken = 0, $presence = false, $timeoutHandler = null)
     {
         if (empty($channel)) {
             throw new PubnubException("Missing Channel in subscribe()");
         }
 
-        $this->_subscribe($channel, null, $callback, $timeToken, $presence);
+        $this->_subscribe($channel, null, $callback, $timeToken, $presence, $timeoutHandler);
     }
 
-    public function channelGroupSubscribe($group, $callback, $timetoken = 0)
+    /**
+     * Subscribe to channel group
+     *
+     * @param string|array $group to subscribe
+     * @param callable $callback to invoke on success
+     * @param int $timetoken
+     * @param null $timeoutHandler to invoke on timeout event
+     * @throws PubnubException
+     */
+    public function channelGroupSubscribe($group, $callback, $timetoken = 0, $timeoutHandler = null)
     {
         if (empty($group)) {
             throw new PubnubException("Missing Group in channelGroupSubscribe()");
         }
 
-        $this->_subscribe(null, $group, $callback, $timetoken);
+        $this->_subscribe(null, $group, $callback, $timetoken, false, $timeoutHandler);
     }
 
-    protected function _subscribe($channel, $channelGroup, $callback, $timeToken = 0, $presence = false)
+    protected function _subscribe($channel, $channelGroup, $callback, $timeToken = 0, $presence = false,
+        $timeoutHandler = null)
     {
         if (empty($callback)) {
             throw new PubnubException("Missing Callback in subscribe()");
@@ -422,7 +436,7 @@ class Pubnub
         $channel = join(',', $channelArray);
         $this->logger->debug("Subscribe channels string: " . $channel);
 
-        if ($channel === null && $channelGroup !== null) {
+        if ($channel === "" && $channelGroup !== null) {
             $channel = ',';
         } else {
             $channel = PubnubUtil::url_encode($channel);
@@ -449,13 +463,27 @@ class Pubnub
                     $timeToken
                 ), $query, true, true);
 
-                if (
-                    array_key_exists('error', $response)
-                    && array_key_exists('status', $response)
-                    && $response['error'] == 1 && $response['status']
-                ) {
-                    $callback($response);
-                    break;
+                if (array_key_exists('error', $response) && $response['error'] == 1) {
+                    // FUTURE: add $response['message'] condition if more cURL responses be added
+                    if  ($response['service'] == 'cURL') {
+                        if (is_callable($timeoutHandler)) {
+                            $continue = $timeoutHandler($response);
+                        } else {
+                            $continue = $callback($response);
+                        }
+
+                        if ($continue) {
+                            continue;
+                        } else {
+                            $this->leave($channel, $channelGroup);
+                            break;
+                        }
+                    } else if (array_key_exists('status', $response) && $response['status']) {
+                        $callback($response);
+                        break;
+                    } else {
+                        continue;
+                    }
                 }
 
                 $messages = $response[0];
@@ -504,9 +532,9 @@ class Pubnub
 
                     if (isset($derivedGroup)) {
                         $resultArray["group"] = $derivedGroup[$i];
-                        if (!$this->shouldWildcardMessageBePassedToUserCallback(
+                        if (!$this->shouldComplexMessageBePassedToUserCallback(
                             $derivedChannel[$i], $derivedGroup[$i], $WCSubscribeChannels,
-                                $WCPresenceChannels, $this->logger
+                                $WCPresenceChannels, explode(",", $channelGroup), $this->logger
                         )) {
                             continue;
                         }
@@ -521,11 +549,7 @@ class Pubnub
 
                 # Explicitly invoke leave event
                 if ($exit_now) {
-                    $channels = explode(',', $channel);
-
-                    foreach ($channels as $ch) {
-                        $this->leave($ch);
-                    }
+                    $this->leave($channel, $channelGroup);
 
                     return;
                 }
@@ -850,11 +874,14 @@ class Pubnub
     /**
      * Get the list of groups
      *
+     * @deprecated 3.8.0 Namespace support will be dropped out soon
      * @param string|null $namespace name
      * @return array
      */
     public function channelGroupListGroups($namespace = null)
     {
+        trigger_error('channelGroupListGroups() methods is deprecated. Namespace support will be dropped out soon.', E_USER_DEPRECATED);
+
         $path = array(
             "v1",
             "channel-registration",
@@ -900,11 +927,14 @@ class Pubnub
     /**
      * Get the list of namespaces
      *
+     * @deprecated 3.8.0 Namespace support will be dropped out soon
      * @return array|null
      * @throws PubnubException
      */
     public function channelGroupListNamespaces()
     {
+        trigger_error('channelGroupListNamespaces() methods is deprecated. Namespace support will be dropped out soon.', E_USER_DEPRECATED);
+
         return $this->request(array(
             "v1",
             "channel-registration",
@@ -917,12 +947,15 @@ class Pubnub
     /**
      * Remove namespace
      *
+     * @deprecated 3.8.0 Namespace support will be dropped out soon
      * @param string $namespace name
      * @return array|null
      * @throws PubnubException
      */
     public function channelGroupRemoveNamespace($namespace)
     {
+        trigger_error('channelGroupRemoveNamespace() methods is deprecated. Namespace support will be dropped out soon.', E_USER_DEPRECATED);
+
         return $this->request(array(
             "v1",
             "channel-registration",
@@ -1114,17 +1147,38 @@ class Pubnub
         $this->pipelinedClient->setSubscribeTimeout($timeout);
     }
 
-    private function leave($channel)
+    /**
+     * Send leave request
+     *
+     * @param string|null $channels separated by comma or a single channel
+     * @param string|null $channel_groups separated by comma or a single channel group
+     *
+     * @return array
+     * @throws PubnubException
+     */
+    public function leave($channels, $channel_groups = null)
     {
-        $this->request(array(
+        if (strlen($channels) > 0 && $channels != ",") {
+            $channelsValue = PubnubUtil::url_encode($channels);
+        } else {
+            $channelsValue = ",";
+        }
+
+        $query = array();
+
+        if (strlen($channel_groups) > 0) {
+            $query["channel-group"] =  PubnubUtil::url_encode($channel_groups);
+        }
+
+        return $this->request(array(
             'v2',
             'presence',
             'sub_key',
             $this->SUBSCRIBE_KEY,
             'channel',
-            PubnubUtil::url_encode($channel),
+            $channelsValue,
             'leave'
-        ));
+        ), $query);
     }
 
     /**
@@ -1198,28 +1252,30 @@ class Pubnub
     }
 
     /**
-     * Check if wc message should be passed to user callback
+     * Checks should a complex subscribe response (with 3d and 4th elements) be passed to user callback
      *
-     * @param string $channel
-     * @param string $group
-     * @param array $subscribe
-     * @param array $presence
+     * @param string $channel of current message
+     * @param string $group element of current message (group or wc channel)
+     * @param array $WCMessageChannels currently subscribed wildcard messages channels
+     * @param array $WCPresenceChannels currently subscribed wildcard presence channels
+     * @param array $CGs currently subscribed channel groups
+     *
      * @param PubnubLogger $logger
      * @return bool passed if message should be passed to user callback
      */
-    public static function shouldWildcardMessageBePassedToUserCallback(
-        $channel, $group, $subscribe, $presence, $logger) {
+    public static function shouldComplexMessageBePassedToUserCallback(
+        $channel, $group, $WCMessageChannels, $WCPresenceChannels, $CGs, $logger) {
         // if presence message while only subscribe
         if (
             PubnubUtil::string_ends_with($channel, static::PRESENCE_SUFFIX)
-            && !in_array($group, $presence)
+            && !in_array($group, $WCPresenceChannels)
         ) {
             $logger->debug("WC presence message on " . $channel . " while is not subscribe for presence");
             return false;
         // if subscribe message while only presence
         } elseif (
             !PubnubUtil::string_ends_with($channel, static::PRESENCE_SUFFIX)
-            && !in_array($group, $subscribe)
+            && !in_array($group, $WCMessageChannels) && !in_array($group, $CGs)
         ) {
             $logger->debug("WC subscribe message on " . $channel . " while is not subscribe for messages");
             return false;

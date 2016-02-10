@@ -5,7 +5,7 @@ use \Pubnub\PubnubException;
 
 class HistoryTest extends TestCase
 {
-    protected $channel = 'pubnub_php_test_history';
+    protected $channel;
     protected $bootstrap;
     protected $start = 5;
     protected static $message = 'Hello from history() test!';
@@ -16,6 +16,7 @@ class HistoryTest extends TestCase
         parent::setUp();
 
         $this->start = $this->pubnub->time();
+        $this->channel =  'pubnub_php_test_history-' . rand();
     }
 
     /**
@@ -59,7 +60,7 @@ class HistoryTest extends TestCase
         $this->pubnub->publish($this->channel, $ary1);
         $this->pubnub->publish($this->channel, $ary2);
 
-        sleep(1);
+        sleep(3);
 
         $response = $this->pubnub->history($this->channel,2);
 
@@ -72,18 +73,14 @@ class HistoryTest extends TestCase
      */
     public function testHistoryEncodedMessagesOneLevel()
     {
-        $pubnub = new Pubnub(array(
-            'publish_key' => 'demo',
-            'subscribe_key' => 'demo',
-            'cipher_key' => 'blah'
-        ));
+        $pubnub = new Pubnub(array_merge(static::$keys, array('cipher_key' => 'blah')));
 
         $m1 = time();
         $m2 = time();
         $pubnub->publish($this->channel, static::$message . $m1);
         $pubnub->publish($this->channel, static::$message_2 . $m2);
 
-        sleep(1);
+        sleep(3);
 
         $response = $pubnub->history($this->channel,2);
 
@@ -96,11 +93,7 @@ class HistoryTest extends TestCase
      */
     public function testHistoryEncodedMessagesMultipleLevel()
     {
-        $pubnub = new Pubnub(array(
-            'publish_key' => 'demo',
-            'subscribe_key' => 'demo',
-            'cipher_key' => 'blah'
-        ));
+        $pubnub = new Pubnub(array_merge(static::$keys, array('cipher_key' => 'blah')));
 
         $m1 = static::$message . time();
         $m2 = static::$message_2 . time();
@@ -120,7 +113,7 @@ class HistoryTest extends TestCase
         $pubnub->publish($this->channel, $ary1);
         $pubnub->publish($this->channel, $ary2);
 
-        sleep(1);
+        sleep(3);
 
         $response = $pubnub->history($this->channel,2);
 
@@ -133,6 +126,11 @@ class HistoryTest extends TestCase
      */
     public function testHistoryIncludeToken()
     {
+        $this->pubnub->publish($this->channel, "hey");
+        $this->pubnub->publish($this->channel, "hey");
+
+        sleep(3);
+
         $response = $this->pubnub->history($this->channel, 2, true);
 
         $this->assertArrayHasKey('message', $response['messages'][0]);
@@ -184,7 +182,7 @@ class HistoryTest extends TestCase
 
         $this->assertEquals(1, $result['error']);
         $this->assertEquals('storage', $result['service']);
-        $this->assertEquals('Storage is not enabled for this subscribe key. Please contact help@pubnub.com', $result['message']);
+        $this->assertEquals('Use of the history API requires the Storage & Playback add-on which is not enabled for this subscribe key. Login to your PubNub Dashboard Account and ADD the Storage & Playback add-on. Contact support@pubnub.com if you require further assistance.', $result['message']);
     }
 
     /**

@@ -19,7 +19,7 @@ try {
 
       
         $credentials_file = count($argv) > 1 
-        ? $argv[1] : __DIR__ . '/_credentials.json';
+        ? $argv[1] : __DIR__ . '/_credentials1.json';
 
 
 
@@ -52,8 +52,8 @@ try {
           }
 
         // dateFrom and dateTo paramteres
-        $timeFrom = '00:00:00'
-        $timeTo = '00:29:59'
+        $timeFrom = '00:00:00';
+        $timeTo = '00:29:59';
 
         while($flag) {
 
@@ -61,18 +61,14 @@ try {
             $start = microtime(true);
                 
             $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
-            'dateFrom' => $credentials['dateFrom'] . 'T' . $timeFrom,
-            'dateTo' => $credentials['dateFrom'] . 'T' . $timeTo,
-            'perPage' => 300,
-            'page' => $pageCount
-
+            'dateFrom' => $credentials['dateFrom'],
+            'dateTo' => $credentials['dateFrom'],
+            'perPage' => 300
             ));
 
             // ApiResponse as jsonArray()
             $apiResponseJSONArray = $apiResponse -> jsonArray();
-            $recordCountPerPage =  + $apiResponseJSONArray["paging"]["pageEnd"] - $apiResponseJSONArray["paging"]["pageStart"] + 1;
-            print 'Number of Records for the page : ' . $recordCountPerPage . PHP_EOL;
-            
+
             // Write the contents to .json file
             file_put_contents("${callLogDir}/call_log_${'dir'}.json", $apiResponse->text(), FILE_APPEND);
 
@@ -96,8 +92,8 @@ try {
             else{
                 // Increment the time interval by next 30 min
                 if($timeTo != '23:59:59' ) {
-                  $timeFrom = $timeTo
-                  $timeTo = strtotime("+30 minutes", strtotime($timeFrom)) 
+                  $timeFrom = $timeTo;
+                  $timeTo = strtotime("+30 minutes", strtotime($timeFrom)); 
                 }
                 else {
                   $flag = False;
