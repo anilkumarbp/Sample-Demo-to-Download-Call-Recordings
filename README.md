@@ -88,11 +88,20 @@ Pre-requisite : Before you initiate the callRecording.php make sure to pass the 
 ## Save the call-recordings to Amazon S3 Bucket
 
 ```php
-require(__DIR__ . '/demo/callRecording.php');
+require(__DIR__ . '/demo/callRecording_S3.php');
 ```
 Aim : Save the call-recordings to your Amazon S3 Buckets using amazon stream writer. Creates a directory called "Recordings" and the recordings are stored as .mp3 / .wav format.
 Pre-requisite : Before you initiate the callRecording.php make sure to pass the "dateFrom" filter in the configuration file ( ./demo/_credentials.json )
                 Make sure to pass in the "amazonAccessKey" and "amazonSecretKey"
+
+## Save the call-recordings to DropBox
+
+```php
+require(__DIR__ . '/demo/callRecording_Dropbox.php');
+```
+Aim : Save the call-recordings to your Dropbox Application. Creates a directory called "Recordings" and the recordings are stored as .mp3 / .wav format.
+Pre-requisite : Before you initiate the callRecording_Dropbox.php make sure to pass the "key" and "secret" within the configuration file ( ./demo/_credentialsSample.json )
+
 
 
 # How to demo?
