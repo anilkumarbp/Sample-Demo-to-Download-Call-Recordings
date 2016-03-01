@@ -4,6 +4,8 @@ demo/_cache
 demo/_credentials.php
 demo/_credentials.json
 demo/_credentials[0-9].json
+demo/_credentials1.json
+demo/_credentials2.json
 demo/Call-Logs
 demo/Csv
 demo/Json
