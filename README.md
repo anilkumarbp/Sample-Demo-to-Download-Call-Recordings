@@ -1,5 +1,5 @@
 # RingCentral Call Generator Recordings Downloader
-Sample PHP command line application to : Generate Call Records ( with / without Recordings ) , download call logs , upload recordings to Amazon S3 Bucket.
+Sample PHP command line application to : Generate Call Records ( with / without Recordings ) , download call logs , upload recordings to Amazon S3 Bucket, Dropbox
 
 ![APP screenshots](docs/Recordings.png) 
  
@@ -7,18 +7,24 @@ Sample PHP command line application to : Generate Call Records ( with / without 
 # Requirements
 
 - PHP 5.3.29+
+- Composer
+- CURL Extension
 
 # Installation
 
-## PHAR with bundled dependencies
+1. Clone the Repsoitory
 
-1. Download [PHAR file](https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader/releases/tag/0.1.0)
-
-```bash
-$ wget https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader/releases/download/0.1.0/RC_CallRecordings_Download.phar
+```sh
+$ git clone https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader.git
 ```
 
-2. Create a `config.json` file with the contents as shown below with your details:
+2. cd into /RingCentral-Call-Generator-Recordings-Downloader Run the Composer command to install the packages
+ 
+```sh
+$ composer install
+```
+
+3. Create a `config.json` file with the contents as shown below with your details:
 
 
 ```php
@@ -42,7 +48,15 @@ $ wget https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Down
 }
 ```
 
-3. CD into the terminal and type:
+# Package your Application
+
+1. Create the PHAR file
+
+```sh
+$ php create-phar.php
+```
+
+2. CD into the folder /build and type:
 
 ```php
 $ php RC_CallRecordings_Download.phar
