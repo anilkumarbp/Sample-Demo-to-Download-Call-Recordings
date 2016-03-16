@@ -4,22 +4,16 @@ use RingCentral\SDK\Http\HttpException;
 use RingCentral\http\Response;
 use RingCentral\SDK\SDK;
 
-
-
-
-
-// ---------------------- Get Call Logs --------------------
-    echo "\n";
-    echo "------------Get Call Logs----------------";
-    echo "\n";
-
+echo "\n";
+echo "------------Get Call Logs----------------";
+echo "\n";
 
 
 try {
 
       
         $credentials_file = count($argv) > 1 
-        ? $argv[1] : __DIR__ . '/_credentials1.json';
+        ? $argv[1] : __DIR__ . '/../config.json';
 
 
 
@@ -89,15 +83,10 @@ try {
                     $pageCount = $pageCount + 1;
                 }
             }
-            else{
-                // Increment the time interval by next 30 min
-                if($timeTo != '23:59:59' ) {
-                  $timeFrom = $timeTo;
-                  $timeTo = strtotime("+30 minutes", strtotime($timeFrom)); 
-                }
-                else {
+            else {
+                // set the flag equals false
                   $flag = False;
-                }
+                
             }
     }
 

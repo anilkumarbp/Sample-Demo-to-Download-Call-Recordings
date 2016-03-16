@@ -5,8 +5,9 @@ use RingCentral\http\Response;
 use Aws\S3\S3Client;
 use RingCentral\SDK\SDK;
 
-require_once(__DIR__ . '/_bootstrap.php');
-
+echo "\n";
+echo "------------Download Call Recordings to Amazon S3  ----------------";
+echo "\n";
 
  try {
 
@@ -136,20 +137,17 @@ require_once(__DIR__ . '/_bootstrap.php');
                     $pageCount = $pageCount + 1;
                 
             }
+
         else {
-          if($timeTo != '23:59:59' ) {
-            $timeFrom = $timeTo
-            $timeTo = strtotime("+30 minutes", strtotime($timeFrom)) 
-          }
-          else {
+            // set the flag equals false
             $flag = False;
           }
           
         }
+
         fclose($file);
-        }
-      
-      } catch (Exception $e) {
+  
+    } catch (Exception $e) {
 
             $message = $e->getMessage();
 

@@ -5,14 +5,16 @@ use RingCentral\http\Response;
 use Aws\S3\S3Client;
 use RingCentral\SDK\SDK;
 
-require_once(__DIR__ . '/_bootstrap.php');
+echo "\n";
+echo "------------Download Call Recordings to local file system ----------------";
+echo "\n";
 
 
  try {
 
 
         $credentials_file = count($argv) > 1 
-        ? $argv[1] : __DIR__ . '/_credentials1.json';
+        ? $argv[1] : __DIR__ . '/../config.json';
 
         $credentials = json_decode(file_get_contents($credentials_file), true);
 
@@ -71,13 +73,8 @@ require_once(__DIR__ . '/_bootstrap.php');
                                      'perPage' => 300,
                                      'page' => $pageCount
                                      ));
-                                   
-          
-          // ApiResponse as jsonArray()                         
+                                                       
           $callLogRecords = $apiResponse->json()->records;
-          // $apiResponseJSONArray = $apiResponse -> jsonArray();
-          // $recordCountPerPage =  + $apiResponseJSONArray["paging"]["pageEnd"] - $apiResponseJSONArray["paging"]["pageStart"] + 1;
-          // print 'Number of Recordings for the page : ' . $recordCountPerPage . PHP_EOL;
 
           foreach ($callLogRecords as $i => $callLogRecord) {
 
@@ -133,21 +130,15 @@ require_once(__DIR__ . '/_bootstrap.php');
           // Check if there is next Page
           if(isset($apiResponseJSONArray["navigation"]["nextPage"])) {  
 
-                    sleep(6);
+                    sleep(20);
 
                     $pageCount = $pageCount + 1;
                 
             }
-        else {
-            // Increment the time interval by next 30 min
-            if($timeTo != '23:59:59' ) {
-              $timeFrom = $timeTo;
-              $timeTo = strtotime("+30 minutes", strtotime($timeFrom));
-            }
-            else {
-              $flag = False;
-            }
 
+        else {
+            // set the flag equals False
+              $flag = False;
         }
 
 

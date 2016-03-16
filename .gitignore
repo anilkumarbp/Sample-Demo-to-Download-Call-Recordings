@@ -5,5 +5,7 @@ demo/_credentials.php
 demo/_credentials.json
 demo/_credentials[0-9].json
 dist
+build
+config.json
 composer*.lock
 vendor

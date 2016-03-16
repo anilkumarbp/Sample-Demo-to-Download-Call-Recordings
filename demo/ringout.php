@@ -4,28 +4,33 @@ use RingCentral\SDK\Http\HttpException;
 use RingCentral\http\Response;
 use RingCentral\SDK\SDK;
 
-require_once(__DIR__ . '/_bootstrap.php');
+echo "\n";
+echo "------------ Initiate RingOut ----------------";
+echo "\n";
 
-// Constants
-$timePerRingOut = 60
-
-$credentials_file = count($argv) > 1 
-  ? $argv[1] : __DIR__ . '/demo/_credentials.json';
-
-$credentials = json_decode(file_get_contents($credentials_file), true);
-
-// Create SDK instance
-
-$rcsdk = new SDK($credentials['appKey'], $credentials['appSecret'], $credentials['server'], 'Demo', '1.0.0');
-
-$platform = $rcsdk->platform();
-
-// Authorize
-
-$platform->login($credentials['username'], $credentials['extension'], $credentials['password']);
-
-// Make a call
 try {
+
+
+		// Constants
+		$timePerRingOut = 60;
+
+		        $credentials_file = count($argv) > 1 
+		        ? $argv[1] : __DIR__ . '/_credentials1.json';
+
+
+		        $credentials = json_decode(file_get_contents($credentials_file), true);
+
+
+		// Create SDK instance
+
+		$rcsdk = new SDK($credentials['appKey'], $credentials['appSecret'], $credentials['server'], 'Demo', '1.0.0');
+
+		$platform = $rcsdk->platform();
+
+		// Authorize
+
+		$platform->login($credentials['username'], $credentials['extension'], $credentials['password']);
+
 		print 'Generating Call Recordings: ' . PHP_EOL;
 
 		$count = $credentials['callRecordingsCount'];

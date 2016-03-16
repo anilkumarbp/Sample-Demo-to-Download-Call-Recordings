@@ -4,10 +4,10 @@ require_once(__DIR__ . '/_bootstrap.php');
 
 use RingCentral\SDK\SDK;
 
-
+try {
 
 		$credentials_file = count($argv) > 1 
-  		? $argv[1] : __DIR__ . '/_credentials1.json';
+  		? $argv[1] : __DIR__ . '/../config.json';
 
 		$credentials = json_decode(file_get_contents($credentials_file), true);
 		
@@ -15,11 +15,6 @@ use RingCentral\SDK\SDK;
     	$rcsdk = new SDK($credentials['appKey'], $credentials['appSecret'], $credentials['server'], 'Demo', '1.0.0');
 
 		$platform = $rcsdk->platform();
-
-
-try {
-
-
 
 		// Retrieve previous authentication data
 
