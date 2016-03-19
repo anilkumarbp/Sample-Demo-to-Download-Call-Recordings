@@ -15,4 +15,5 @@ build
 config.json
 composer*.lock
 vendor
+.env
 
