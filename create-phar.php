@@ -17,10 +17,14 @@ function listDir($root, $path, $phar)
         if ($fileinfo->isDot() ||
             stristr($filename, 'Test.php') ||
             stristr($filename, '.git') ||
+            stristr($filename, '.gitignore') ||
             stristr($filename, 'manual_tests') ||
             stristr($filename, 'tests') ||
             // stristr($filename, 'demo') ||
+            stristr($filename, 'Call-Logs') ||
+            stristr($filename, '_cache') ||
             stristr($filename, 'dist') ||
+            stristr($filename, 'build') ||
             stristr($filename, 'docs')
         ) {
             continue;
@@ -35,5 +39,7 @@ function listDir($root, $path, $phar)
 }
 
 listDir(__DIR__ . '/', '', $phar);
+
+// $phar->buildFromDirectory(__DIR__ . '/demo');
 
 $phar->setStub($phar->createDefaultStub("index.php"));

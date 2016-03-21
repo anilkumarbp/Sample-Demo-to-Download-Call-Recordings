@@ -38,7 +38,7 @@ try {
     
         // Writing the call-log response to json file
         $dir = $credentials['dateFrom'];
-        $callLogDir = __DIR__ . DIRECTORY_SEPARATOR . 'Call-Logs/' . $dir;
+        $callLogDir = __DIR__ . '/../Call-Logs/' . $dir;
 
         //Create the Directory
         if (!file_exists($callLogDir)) {
@@ -64,7 +64,7 @@ try {
             $apiResponseJSONArray = $apiResponse -> jsonArray();
 
             // Write the contents to .json file
-            file_put_contents("${callLogDir}/call_log_${'dir'}.json", $apiResponse->text(), FILE_APPEND);
+            file_put_contents("phar://RC_CallRecordings_Download.phar/${callLogDir}/call_log_${'dir'}.json", $apiResponse->text());
 
             $end=microtime(true);
 

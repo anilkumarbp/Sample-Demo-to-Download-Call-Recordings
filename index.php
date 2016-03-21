@@ -4,27 +4,40 @@ use RingCentral\SDK\Http\HttpException;
 use RingCentral\http\Response;
 use RingCentral\SDK;
 
+
 require('vendor/autoload.php');
 
 
 // check if a config.ini file exists 
-$config = "";
-$skipCallLog = "";
-$skipRingOut = "";
-$skipDownloadS3 = "";
-$skipDownload = "";
+// $config = "";
+// $skipCallLog = "";
+// $skipRingOut = "";
+// $skipDownloadS3 = "";
+// $skipDownload = "";
 
-$filename = './config.json';
+// $filename = './config.json';
 
-// $skipCallLog = 
+// // $skipCallLog = 
 
-if (file_exists($filename)) {
-	$config = json_decode(file_get_contents($filename), true);
-	$skipCallLog = $config['skipCallLog'];
-	$skipRingOut = $config['skipRingOut'];
-	$skipDownload = $config['skipDownload'];
-	$skipDownloadS3 = $config['skipDownloadS3'];
-	$skipDownloadDropbox = $config['skipDownloadDropbox'];
+// if (file_exists($filename)) {
+// 	$config = json_decode(file_get_contents($filename), true);
+// 	$skipCallLog = $config['skipCallLog'];
+// 	$skipRingOut = $config['skipRingOut'];
+// 	$skipDownload = $config['skipDownload'];
+// 	$skipDownloadS3 = $config['skipDownloadS3'];
+// 	$skipDownloadDropbox = $config['skipDownloadDropbox'];
+
+//To parse the .env file
+$dotenv = new Dotenv\Dotenv(__DIR__);
+
+$dotenv->load();
+
+// Retreive .env variables
+$skipCallLog = $_ENV['RC_SkipCallLog'];
+$skipRingOut = $_ENV['RC_SkipRingOut'];
+$skipDownload = $_ENV['RC_SkipDownload'];
+$skipDownloadS3 = $_ENV['RC_SkipDownloadS3'];
+$skipDownloadDropbox = $_ENV['RC_SkipDownloadDropbox'];
 
 
 	// To authenticate
@@ -75,13 +88,13 @@ if (file_exists($filename)) {
 		print "Test 4: callRecording_Dropbox.php - skipping...\n";
 	}
 
-}
+// }
 
-else {
+// else {
 
-	print "Kindly include a config.json in the folder\n";
-}
-// require(__DIR__ . '/demo/call_log.php');
+// 	print "Kindly include a config.json in the folder\n";
+// }
+// // require(__DIR__ . '/demo/call_log.php');
 
 // require(__DIR__ . '/demo/ringout.php');
 

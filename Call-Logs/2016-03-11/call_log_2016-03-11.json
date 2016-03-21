@@ -1,0 +1,13 @@
+{
+  "uri" : "https://platform.devtest.ringcentral.com/restapi/v1.0/account/131192004/extension/131192004/call-log?view=Simple&dateFrom=2016-03-11T00:00:00.000Z&dateTo=2016-03-11T00:00:00.000Z&page=1&perPage=300",
+  "records" : [ ],
+  "paging" : {
+    "page" : 1,
+    "perPage" : 300
+  },
+  "navigation" : {
+    "firstPage" : {
+      "uri" : "https://platform.devtest.ringcentral.com/restapi/v1.0/account/131192004/extension/131192004/call-log?view=Simple&dateFrom=2016-03-11T00:00:00.000Z&dateTo=2016-03-11T00:00:00.000Z&page=1&perPage=300"
+    }
+  }
+}
