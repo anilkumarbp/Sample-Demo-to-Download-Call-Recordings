@@ -16,6 +16,7 @@ try {
         ? $argv[1] : __DIR__ . '/../config.json';
 
 
+        
 
         $credentials = json_decode(file_get_contents($credentials_file), true);
 

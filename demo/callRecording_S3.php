@@ -11,16 +11,20 @@ echo "\n";
 
  try {
 
-        $credentials_file = './config.json';
+        // $credentials_file = './config.json';
         // $credentials_file = count($argv) > 1 
         // ? $argv[1] : __DIR__ . '/_credentials.json';
 
-        $credentials = json_decode(file_get_contents($credentials_file), true);
+        $dotenv = new Dotenv\Dotenv(__DIR__.'/../');
+
+        $dotenv->load();
+
+        // $credentials = json_decode(file_get_contents($credentials_file), true);
 
         // Create the S3 Client
         $client = S3Client::factory(array(
-        'key' => $credentials['amazonAccessKey'],
-        'secret' => $credentials['amazonSecretKey'],
+        'key' => $_ENV['amazonAccessKey'],
+        'secret' => $_ENV['amazonSecretKey'],
         'command.params' => ['PathStyle' => true]
         ));
         
@@ -38,18 +42,18 @@ echo "\n";
         $recordingCountPerPage = 100;
 
 
-        $dateFrom = $credentials['dateFrom'];
-        $dir = $credentials['dateFrom'];
+        $dateFrom = $_ENV['dateFrom'];
+        $dir = $_ENV['dateFrom'];
 
         // Create SDK instance
 
-        $rcsdk = new SDK($credentials['appKey'], $credentials['appSecret'], $credentials['server'], 'Demo', '1.0.0');
+        $rcsdk = new SDK($_ENV['RC_AppKey'], $_ENV['RC_AppSecret'], $_ENV['RC_Server'], 'Demo', '1.0.0');
 
         $platform = $rcsdk->platform();
 
         // Authorize
 
-        $platform->login($credentials['username'], $credentials['extension'], $credentials['password'], true);
+        $platform->login($_ENV['RC_Username'], $_ENV['RC_Extension'], $_ENV['RC_Password'], true);
 
         
 
