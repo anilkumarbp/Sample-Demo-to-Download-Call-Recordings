@@ -12,8 +12,17 @@ echo "\n";
 
 try {
 
+
+      // To parse the .env
+      $dotenv = new Dotenv\Dotenv(getcwd());
+      $dotenv->load();
+
       // Dropbox Authentication
-      $appInfo = dbx\AppInfo::loadFromJsonFile("config.json");
+      $appInfo = dbx\AppInfo::loadFromJson(array(
+      'key' =>    $_ENV["dropBoxkey"],
+      'secret' => $_ENV["dropBoxsecret"]
+        ));
+      
       $webAuth = new dbx\WebAuthNoRedirect($appInfo, "PHP-Example/1.0");
 
       $authorizeUrl = $webAuth->start();

@@ -4,6 +4,10 @@ use RingCentral\SDK\Http\HttpException;
 use RingCentral\http\Response;
 use Aws\S3\S3Client;
 use RingCentral\SDK\SDK;
+use Aws\Common\Aws;
+use Aws\Ses\SesClient;
+
+require('vendor/autoload.php');
 
 echo "\n";
 echo "------------Download Call Recordings to Amazon S3  ----------------";
@@ -11,15 +15,9 @@ echo "\n";
 
  try {
 
-        // $credentials_file = './config.json';
-        // $credentials_file = count($argv) > 1 
-        // ? $argv[1] : __DIR__ . '/_credentials.json';
-
-        $dotenv = new Dotenv\Dotenv(__DIR__.'/../');
+        $dotenv = new Dotenv\Dotenv(getcwd());
 
         $dotenv->load();
-
-        // $credentials = json_decode(file_get_contents($credentials_file), true);
 
         // Create the S3 Client
         $client = S3Client::factory(array(
@@ -32,7 +30,7 @@ echo "\n";
         $client->registerStreamWrapper();
 
         // create a bucket
-        $client->createBucket(array('Bucket' => 'myRecording'));
+        $client->createBucket(array('Bucket' => 'myrecording'));
 
         // Constants
         $status = "Success";  
@@ -71,13 +69,17 @@ echo "\n";
         fputcsv($file, $fileHeaders);
         $fileContents = array();
 
+        // dateFrom and dateTo paramteres
+        $timeFrom = '00:00:00';
+        $timeTo = '23:59:59';
+
         while($flag) {
 
         $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
                                      'type'          => 'Voice',
                                      'withRecording' => 'True',
-                                     'dateFrom' => $credentials['dateFrom'] . 'T' . $timeFrom,
-                                     'dateTo' => $credentials['dateFrom'] . 'T' . $timeTo,
+                                     'dateFrom' => $_ENV['dateFrom'] . 'T' . $dateFrom,
+                                     'dateTo' => $_ENV['dateFrom'] . 'T' . $dateTo,
                                      'perPage' => 300,
                                      'page' => $pageCount
                                      ));

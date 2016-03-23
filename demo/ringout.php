@@ -14,26 +14,25 @@ try {
 		// Constants
 		$timePerRingOut = 60;
 
-		        $credentials_file = count($argv) > 1 
-		        ? $argv[1] : __DIR__ . '/_credentials1.json';
+        // To parse the .env
+        $dotenv = new Dotenv\Dotenv(getcwd());
 
-
-		        $credentials = json_decode(file_get_contents($credentials_file), true);
+        $dotenv->load();
 
 
 		// Create SDK instance
 
-		$rcsdk = new SDK($credentials['appKey'], $credentials['appSecret'], $credentials['server'], 'Demo', '1.0.0');
+		$rcsdk = new SDK($_ENV['RC_AppKey'], $_ENV['RC_AppSecret'], $_ENV['RC_Server'], 'Demo', '1.0.0');
 
 		$platform = $rcsdk->platform();
 
 		// Authorize
 
-		$platform->login($credentials['username'], $credentials['extension'], $credentials['password']);
+		$platform->login($_ENV['RC_Username'], $_ENV['RC_Extension'], $_ENV['RC_Password']);
 
 		print 'Generating Call Recordings: ' . PHP_EOL;
 
-		$count = $credentials['callRecordingsCount'];
+		$count = $_ENV['RC_callRecordingsCount'];
 		
 		for($i = 1; $i <= $count; $i++) {
 
@@ -41,8 +40,8 @@ try {
         	$start = microtime(true);
         	print 'Start Time :' . $start . PHP_EOL;
 			$response = $platform->post('/account/~/extension/~/ringout', array(
-			    'from' => array('phoneNumber' => $credentials['fromPhoneNumber']),
-			    'to'   => array('phoneNumber' => $credentials['toPhoneNumber'])
+			    'from' => array('phoneNumber' => $_ENV['RC_fromPhoneNumber']),
+			    'to'   => array('phoneNumber' => $_ENV['RC_toPhoneNumber'])
 			));
 
 			$json = $response->json();

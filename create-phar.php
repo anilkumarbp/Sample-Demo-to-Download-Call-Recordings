@@ -2,7 +2,7 @@
 
 exec('rm -rf ' . __DIR__ . '/build');
 @mkdir('./build');
-$srcRoot = "./demo";
+$srcRoot = "~/RingCentral-Call-Generator-Recordings-Downloader/";
 $buildRoot = "./build";
  
 $phar = new Phar($buildRoot . "/RC_CallRecordings_Download.phar", 
@@ -22,6 +22,9 @@ function listDir($root, $path, $phar)
             stristr($filename, 'tests') ||
             // stristr($filename, 'demo') ||
             stristr($filename, 'Call-Logs') ||
+            stristr($filename, 'Json') ||
+            stristr($filename, 'Csv') ||
+            stristr($filename, 'Recordings') ||
             stristr($filename, '_cache') ||
             stristr($filename, 'dist') ||
             stristr($filename, 'build') ||
@@ -39,7 +42,5 @@ function listDir($root, $path, $phar)
 }
 
 listDir(__DIR__ . '/', '', $phar);
-
-// $phar->buildFromDirectory(__DIR__ . '/demo');
 
 $phar->setStub($phar->createDefaultStub("index.php"));

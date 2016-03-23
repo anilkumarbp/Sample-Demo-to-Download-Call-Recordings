@@ -7,28 +7,8 @@ use RingCentral\SDK;
 
 require('vendor/autoload.php');
 
-
-// check if a config.ini file exists 
-// $config = "";
-// $skipCallLog = "";
-// $skipRingOut = "";
-// $skipDownloadS3 = "";
-// $skipDownload = "";
-
-// $filename = './config.json';
-
-// // $skipCallLog = 
-
-// if (file_exists($filename)) {
-// 	$config = json_decode(file_get_contents($filename), true);
-// 	$skipCallLog = $config['skipCallLog'];
-// 	$skipRingOut = $config['skipRingOut'];
-// 	$skipDownload = $config['skipDownload'];
-// 	$skipDownloadS3 = $config['skipDownloadS3'];
-// 	$skipDownloadDropbox = $config['skipDownloadDropbox'];
-
 //To parse the .env file
-$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv = new Dotenv\Dotenv(getcwd());
 
 $dotenv->load();
 
@@ -87,20 +67,3 @@ $skipDownloadDropbox = $_ENV['RC_SkipDownloadDropbox'];
 	} else {
 		print "Test 4: callRecording_Dropbox.php - skipping...\n";
 	}
-
-// }
-
-// else {
-
-// 	print "Kindly include a config.json in the folder\n";
-// }
-// // require(__DIR__ . '/demo/call_log.php');
-
-// require(__DIR__ . '/demo/ringout.php');
-
-// require(__DIR__ . '/demo/callRecording.php');
-
-// require(__DIR__ . '/demo/callRecording_S3.php');
-
-// require(__DIR__ . '/demo/callRecording_Dropbox.php');
-

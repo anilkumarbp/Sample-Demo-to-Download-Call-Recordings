@@ -11,14 +11,10 @@ echo "\n";
 
 try {
 
-      
-        $credentials_file = count($argv) > 1 
-        ? $argv[1] : __DIR__ . '/../config.json';
+        // To parse the .env
+        $dotenv = new Dotenv\Dotenv(getcwd());
 
-
-        
-
-        $credentials = json_decode(file_get_contents($credentials_file), true);
+        $dotenv->load();
 
         // constants
             // Count of Pages
@@ -29,17 +25,17 @@ try {
 
         // Create SDK instance
 
-        $rcsdk = new SDK($credentials['appKey'], $credentials['appSecret'], $credentials['server'], 'Demo', '1.0.0');
+        $rcsdk = new SDK($_ENV['RC_AppKey'], $_ENV['RC_AppSecret'], $_ENV['RC_Server'], 'Demo', '1.0.0');
 
         $platform = $rcsdk->platform();
 
         // Authorize
 
-        $platform->login($credentials['username'], $credentials['extension'], $credentials['password'], true);
+        $platform->login($_ENV['RC_Username'], $_ENV['RC_Extension'], $_ENV['RC_Password'], true);
     
         // Writing the call-log response to json file
-        $dir = $credentials['dateFrom'];
-        $callLogDir = __DIR__ . '/../Call-Logs/' . $dir;
+        $dir = $_ENV['RC_dateFrom'];
+        $callLogDir = getcwd() . '/Call-Logs/' . $dir;
 
         //Create the Directory
         if (!file_exists($callLogDir)) {
@@ -48,7 +44,7 @@ try {
 
         // dateFrom and dateTo paramteres
         $timeFrom = '00:00:00';
-        $timeTo = '00:29:59';
+        $timeTo = '23:59:59';
 
         while($flag) {
 
@@ -56,8 +52,8 @@ try {
             $start = microtime(true);
                 
             $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
-            'dateFrom' => $credentials['dateFrom'],
-            'dateTo' => $credentials['dateFrom'],
+            'dateFrom' => $_ENV['RC_dateFrom'] . 'T' . $timeFrom,
+            'dateTo' => $_ENV['RC_dateTo'] . 'T' . $timeTo,
             'perPage' => 300
             ));
 
@@ -65,7 +61,7 @@ try {
             $apiResponseJSONArray = $apiResponse -> jsonArray();
 
             // Write the contents to .json file
-            file_put_contents("phar://RC_CallRecordings_Download.phar/${callLogDir}/call_log_${'dir'}.json", $apiResponse->text());
+            file_put_contents("${callLogDir}/call_log_${'dir'}.json", $apiResponse->text());
 
             $end=microtime(true);
 

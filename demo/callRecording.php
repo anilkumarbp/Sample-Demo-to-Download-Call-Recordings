@@ -13,16 +13,16 @@ echo "\n";
  try {
 
 
-        $credentials_file = count($argv) > 1 
-        ? $argv[1] : __DIR__ . '/../config.json';
+        // To parse the .env
+        $dotenv = new Dotenv\Dotenv(getcwd());
 
-        $credentials = json_decode(file_get_contents($credentials_file), true);
+        $dotenv->load();
 
         // Constants
 
           $recordingID = "";
           $status = "Success";
-          $dir = $credentials['dateFrom'];
+          $dir = $_ENV['RC_dateFrom'];
           $flag = True;
           $pageCount = 1;
           $recordingCountPerPage = 100;
@@ -30,18 +30,18 @@ echo "\n";
 
         // Create SDK instance
 
-        $rcsdk = new SDK($credentials['appKey'], $credentials['appSecret'], $credentials['server'], 'Demo', '1.0.0');
+        $rcsdk = new SDK($_ENV['RC_AppKey'], $_ENV['RC_AppSecret'], $_ENV['RC_Server'], 'Demo', '1.0.0');
 
         $platform = $rcsdk->platform();
 
         // Authorize
 
-        $platform->login($credentials['username'], $credentials['extension'], $credentials['password'], true);
+        $platform->login($_ENV['RC_Username'], $_ENV['RC_Extension'], $_ENV['RC_Password'], true);
 
           // Writing the call-log response to json file
-          $recordingsDir = __DIR__ . DIRECTORY_SEPARATOR . 'Recordings/' . $dir;
-          $jsonDir = __DIR__ . DIRECTORY_SEPARATOR . 'Json/' . $dir;
-          $csvDir = __DIR__ . DIRECTORY_SEPARATOR . 'Csv/' . $dir;
+          $recordingsDir = getcwd() . DIRECTORY_SEPARATOR . 'Recordings/' . $dir;
+          $jsonDir = getcwd() . DIRECTORY_SEPARATOR . 'Json/' . $dir;
+          $csvDir = getcwd() . DIRECTORY_SEPARATOR . 'Csv/' . $dir;
           
           //Create the Directory
           if (!file_exists($recordingsDir) && !file_exists($jsonDir) && !file_exists($csvDir)) {
@@ -57,9 +57,12 @@ echo "\n";
           fputcsv($file, $fileHeaders);
           $fileContents = array();
 
-        // dateFrom and dateTo paramteres
         $timeFrom = '00:00:00';
-        $timeTo = '00:29:59';
+        $timeTo = '23:59:59';
+
+        // dateFrom and dateTo paramteres
+        // $timeFrom = '00:00:00';
+        // $timeTo = '00:59:59';
         // Find call log records with recordings
         while($flag) {
         
@@ -68,8 +71,8 @@ echo "\n";
         $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
                                      'type'          => 'Voice',
                                      'withRecording' => 'True',
-                                     'dateFrom' => $credentials['dateFrom'],
-                                     'dateTo' => $credentials['dateFrom'],
+                                     'dateFrom' => $_ENV['RC_dateFrom'] . 'T' . $timeFrom,
+                                     'dateTo' => $_ENV['RC_dateTo'] . 'T' . $timeTo,
                                      'perPage' => 300,
                                      'page' => $pageCount
                                      ));
