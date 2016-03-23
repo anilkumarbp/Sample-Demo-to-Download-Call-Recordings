@@ -16,4 +16,5 @@ config.json
 composer*.lock
 vendor
 .env
+.env.example
 
