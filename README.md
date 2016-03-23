@@ -70,7 +70,7 @@ cd into `RingCentral-Call-Generator-Recordings-Downloader` Run the Composer comm
 $ composer install
 ```
 
-Create a `.env` file with the contents as shown below with your RingCentral Account details:
+Create a `.env` file with the contents as **shown above** with your RingCentral Account details:
 
 Then execute:
 
