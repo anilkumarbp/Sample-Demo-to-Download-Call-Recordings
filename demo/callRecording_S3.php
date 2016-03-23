@@ -30,7 +30,7 @@ echo "\n";
         $client->registerStreamWrapper();
 
         // create a bucket
-        $client->createBucket(array('Bucket' => 'myrecording'));
+        $client->createBucket(array('Bucket' => 'myRecording'));
 
         // Constants
         $status = "Success";  
@@ -40,8 +40,8 @@ echo "\n";
         $recordingCountPerPage = 100;
 
 
-        $dateFrom = $_ENV['dateFrom'];
-        $dir = $_ENV['dateFrom'];
+        $dateFrom = $_ENV['RC_dateFrom'];
+        $dir = $_ENV['RC_dateFrom'];
 
         // Create SDK instance
 
@@ -78,17 +78,20 @@ echo "\n";
         $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
                                      'type'          => 'Voice',
                                      'withRecording' => 'True',
-                                     'dateFrom' => $_ENV['dateFrom'] . 'T' . $dateFrom,
-                                     'dateTo' => $_ENV['dateFrom'] . 'T' . $dateTo,
+                                     'dateFrom' => $_ENV['RC_dateFrom'] . 'T' . $timeFrom,
+                                     'dateTo' => $_ENV['RC_dateTo'] . 'T' . $timeTo,
                                      'perPage' => 300,
                                      'page' => $pageCount
                                      ));
 
           // ApiResponse as jsonArray()
           $callLogRecords = $apiResponse->json()->records;
-          $apiResponseJSONArray = $apiResponse -> jsonArray();
-          $recordCountPerPage =  + $apiResponseJSONArray["paging"]["pageEnd"] - $apiResponseJSONArray["paging"]["pageStart"] + 1;
-          print 'Number of Recordings for the page : ' . $recordCountPerPage . PHP_EOL;
+
+          // To keep track of the records per page ( :FIX implemented later ) 
+
+          // $apiResponseJSONArray = $apiResponse -> jsonArray();
+          // $recordCountPerPage =  + $apiResponseJSONArray["paging"]["pageEnd"] - $apiResponseJSONArray["paging"]["pageStart"] + 1;
+          // print 'Number of Recordings for the page : ' . $recordCountPerPage . PHP_EOL;
         
 
           foreach ($callLogRecords as $i => $callLogRecord) {
