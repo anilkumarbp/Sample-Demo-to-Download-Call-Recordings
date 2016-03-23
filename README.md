@@ -14,16 +14,41 @@ Sample PHP command line application to : Generate Call Records ( with / without 
 
 ## Using the PHAR package  **( Recommended )**
 
-Download the PHAR file: [`https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader/releases/download/0.1.2/RC_CallRecordings_Download.phar`](Click Here for PHAR file)*
+Download the PHAR file: [`Click Here for PHAR file`](https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader/releases/download/0.1.2/RC_CallRecordings_Download.phar)*
 
 ```sh
 $ wget https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader/releases/download/0.1.2/RC_CallRecordings_Download.phar
 ```
 
-CD into the folder where the PHAR file is downloaded and create a .env file as shown above: (alternatively you could create a .env using the vi editor)
+cd into the folder where the PHAR file is downloaded and create a .env file as shown above: (alternatively you could create a .env using the vi editor)
 
 ```php
 $ vim .env
+```
+copy the contents from `.env.example` into `.env` file as below and enter the RC account details:
+```php
+
+* **RC_AppKey= 							
+* **RC_AppSecret= 
+* **RC_Server= 
+* **RC_Username= 
+* **RC_Extension= 
+* **RC_Password= 
+* **RC_fromPhoneNumber= 
+* **RC_toPhoneNumber= 
+* **RC_dateFrom= 
+* **RC_dateTo= 
+* **RC_callRecordingsCount= 
+* **amazonAccessKey= 
+* **amazonSecretKey= 
+* **dropBoxkey= 
+* **dropBoxsecret= 
+* **RC_SkipCallLog=           
+* **RC_SkipRingOut=         
+* **RC_SkipDownload=     
+* **RC_SkipDownloadS3= 
+* **RC_SkipDownloadDropbox=  
+
 ```
 
 Execute the PHAR file
