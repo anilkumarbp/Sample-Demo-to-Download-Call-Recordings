@@ -71,11 +71,11 @@ echo "\n";
 
         // dateFrom and dateTo paramteres
         $timeFrom = '00:00:00';
-        $timeTo = '23:59:59';
+        $timeTo = '00:59:59';
 
         while($flag) {
 
-        $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
+        $apiResponse = $platform->get('/account/~/call-log', array(
                                      'type'          => 'Voice',
                                      'withRecording' => 'True',
                                      'dateFrom' => $_ENV['RC_dateFrom'] . 'T' . $timeFrom,
@@ -87,12 +87,6 @@ echo "\n";
           // ApiResponse as jsonArray()
           $callLogRecords = $apiResponse->json()->records;
 
-          // To keep track of the records per page ( :FIX implemented later ) 
-
-          // $apiResponseJSONArray = $apiResponse -> jsonArray();
-          // $recordCountPerPage =  + $apiResponseJSONArray["paging"]["pageEnd"] - $apiResponseJSONArray["paging"]["pageStart"] + 1;
-          // print 'Number of Recordings for the page : ' . $recordCountPerPage . PHP_EOL;
-        
 
           foreach ($callLogRecords as $i => $callLogRecord) {
 
@@ -147,12 +141,21 @@ echo "\n";
                 
             }
 
-        else {
+        else if($timeTo != '23:59:59') {
             // set the flag equals false
-            $flag = False;
+            $pageCount = 1;
+            $timeFrom = $timeTo;
+            $timestamp = strtotime($timeTo) + 60*60-1;
+            $timeTo = date('H:i:s', $timestamp);
           }
           
+        else {
+
+          $flag = fasle;
         }
+
+      }
+
 
         fclose($file);
   

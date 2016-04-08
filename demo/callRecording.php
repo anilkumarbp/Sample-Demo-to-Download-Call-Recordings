@@ -60,9 +60,6 @@ echo "\n";
         $timeFrom = '00:00:00';
         $timeTo = '23:59:59';
 
-        // dateFrom and dateTo paramteres
-        // $timeFrom = '00:00:00';
-        // $timeTo = '00:59:59';
         // Find call log records with recordings
         while($flag) {
         
