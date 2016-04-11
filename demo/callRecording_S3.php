@@ -135,7 +135,18 @@ echo "\n";
 
             print 'Expected HTTP Error: ' . $message . PHP_EOL;
 
-      }
+            $apiResponse = $e->apiResponse();
+            print 'The Request is :' . PHP_EOL;
+            print_r($apiResponse->request());
+            print PHP_EOL; 
+            print 'The Response is :' . PHP_EOL;
+            print_r($apiResponse->response());
+            print PHP_EOL; 
+            
+            // Another way to get message, but keep in mind, that there could be no response if request has failed completely
+            print '  Message: ' . $e->apiResponse->response()->error() . PHP_EOL;
+
+        }
 
                       
 ?>

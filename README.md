@@ -1,5 +1,7 @@
-# RingCentral Call Generator Recordings Downloader
-Sample PHP command line application to : Generate Call Records ( with / without Recordings ) , download call logs , upload recordings to Amazon S3 Bucket, Dropbox
+# RingCentral Call Generator Recordings Downloader - BETA
+A Sample PHP command line application to : Generate Call Records ( with / without Recordings ) , download call logs , upload recordings to Amazon S3 Bucket, Dropbox
+
+**Please Keep in mind that this is not a Production ready Application but just a sample demo**
 
 ![APP screenshots](docs/Recordings.png) 
  
