@@ -69,91 +69,61 @@ echo "\n";
         fputcsv($file, $fileHeaders);
         $fileContents = array();
 
-        // dateFrom and dateTo paramteres
-        $timeFrom = '00:00:00';
-        $timeTo = '00:59:59';
+        // Read the contents from the Call-Log file :
+        $callLogRecordsFromFile = file_get_contents(getcwd() . "/Call-Logs/${dateFrom}/call_log_${dateFrom}.json");
 
-        while($flag) {
-
-        $apiResponse = $platform->get('/account/~/call-log', array(
-                                     'type'          => 'Voice',
-                                     'withRecording' => 'True',
-                                     'dateFrom' => $_ENV['RC_dateFrom'] . 'T' . $timeFrom,
-                                     'dateTo' => $_ENV['RC_dateTo'] . 'T' . $timeTo,
-                                     'perPage' => 300,
-                                     'page' => $pageCount
-                                     ));
-
-          // ApiResponse as jsonArray()
-          $callLogRecords = $apiResponse->json()->records;
+        $callLogRecords = json_decode($callLogRecordsFromFile, true);
 
 
           foreach ($callLogRecords as $i => $callLogRecord) {
 
-            $recordingID = $callLogRecord->recording->id;
-                        
-            print "Downloading Call Log Record : ". $recordingID . PHP_EOL;
+            if($callLogRecord["recording"]) {
 
-            $uri = $callLogRecord->recording->contentUri;
+                $recordingID = $callLogRecord["recording"]["id'"];
+                            
+                print "Downloading Call Log Record : ". $recordingID . PHP_EOL;
 
-            print "Retrieving ${uri}" . PHP_EOL;
+                $uri = $callLogRecord["recording"]["contentUri"];
 
-            $apiResponse = $platform->get($callLogRecord->recording->contentUri);
-                        
-            $ext = ($apiResponse->response()->getHeader('Content-Type')[0] == 'audio/mpeg')
-            ? 'mp3' : 'wav';
+                print "Retrieving ${uri}" . PHP_EOL;
 
-            $start = microtime(true);
+                $apiResponse = $platform->get($uri);
+                            
+                $ext = ($apiResponse->response()->getHeader('Content-Type')[0] == 'audio/mpeg')
+                ? 'mp3' : 'wav';
 
-            $filename = "s3://myRecording/Recordings/${'dateFrom'}/recording_${'recordingID'}.${ext}";
+                $start = microtime(true);
 
-            // Write the file to S3 Bucket
-            file_put_contents($filename, $apiResponse->raw());
+                $filename = "s3://myRecording/Recordings/${'dateFrom'}/recording_${'recordingID'}.${ext}";
 
-            if(filesize($filename) == 0) {
-              $status = "failure";
-            }
-       
+                // Write the file to S3 Bucket
+                file_put_contents($filename, $apiResponse->raw());
 
-            print "Finished uploading the Recording :" . $recordingID . "to S3 Bucket" . PHP_EOL;
+                if(filesize($filename) == 0) {
+                  $status = "failure";
+                }
+           
 
-            $end=microtime(true);
+                print "Finished uploading the Recording :" . $recordingID . "to S3 Bucket" . PHP_EOL;
 
-            // Check if the recording completed wihtin 6 seconds.
-            $time = ($end*1000 - $start*1000) / 1000;
-            if($time < $timePerRecording) {
-                sleep($timePerRecording-$time);
-            }
+                $end=microtime(true);
 
-            // write to csv                       
-            $fileContents = array($recordingID, $uri, $filename, $status);
-            fputcsv($file, $fileContents);  
+                // Check if the recording completed wihtin 6 seconds.
+                $time = ($end*1000 - $start*1000) / 1000;
+                if($time < $timePerRecording) {
+                    sleep($timePerRecording-$time);
+                }
+
+                // write to csv                       
+                $fileContents = array($recordingID, $uri, $filename, $status);
+                fputcsv($file, $fileContents);  
           
           }
 
-
-          // Check if there is next Page
-          if(isset($apiResponseJSONArray["navigation"]["nextPage"])) {  
-
-                    sleep(60);
-
-                    $pageCount = $pageCount + 1;
-                
+          else {
+              continue;
             }
-
-        else if($timeTo != '23:59:59') {
-            // set the flag equals false
-            $pageCount = 1;
-            $timeFrom = $timeTo;
-            $timestamp = strtotime($timeTo) + 60*60-1;
-            $timeTo = date('H:i:s', $timestamp);
-          }
-          
-        else {
-
-          $flag = fasle;
-        }
-
+            
       }
 
 

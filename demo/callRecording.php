@@ -57,93 +57,77 @@ echo "\n";
           fputcsv($file, $fileHeaders);
           $fileContents = array();
 
+        $dateFrom = $_ENV['RC_dateFrom'];
         $timeFrom = '00:00:00';
         $timeTo = '23:59:59';
 
-        // Find call log records with recordings
-        while($flag) {
-        
+        // Read the contents from the Call-Log file :
+        $callLogRecordsFromFile = file_get_contents(getcwd() . "/Call-Logs/${dateFrom}/call_log_${dateFrom}.json");
+
+        $callLogRecords = json_decode($callLogRecordsFromFile, true);
 
 
-        $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
-                                     'type'          => 'Voice',
-                                     'withRecording' => 'True',
-                                     'dateFrom' => $_ENV['RC_dateFrom'] . 'T' . $timeFrom,
-                                     'dateTo' => $_ENV['RC_dateTo'] . 'T' . $timeTo,
-                                     'perPage' => 300,
-                                     'page' => $pageCount
-                                     ));
-                                                       
-          $callLogRecords = $apiResponse->json()->records;
+        print "The type is : " . gettype($callLogRecords) . PHP_EOL;
 
-          foreach ($callLogRecords as $i => $callLogRecord) {
+          foreach ($callLogRecords as $callLogRecord) {
 
-            $recordingID = $callLogRecord->recording->id;
-                        
-            print "Downloading Call Log Record : ". $recordingID . PHP_EOL;
+              if($callLogRecord["recording"]) {
 
-            $uri = $callLogRecord->recording->contentUri;
+                  $recordingID = $callLogRecord["recording"]["id"];
+                              
+                  print "Downloading Call Log Record : ". $recordingID . PHP_EOL;
 
-            // print "The contentURI is : ${uri}";
+                  $uri = $callLogRecord["recording"]["contentUri"];
 
-            print "Retrieving ${uri}" . PHP_EOL;
+                  // print "The contentURI is : ${uri}";
 
-            $apiResponse = $platform->get($callLogRecord->recording->contentUri);
-                        
-            $ext = ($apiResponse->response()->getHeader('Content-Type')[0] == 'audio/mpeg')
-            ? 'mp3' : 'wav';
+                  print "Retrieving ${uri}" . PHP_EOL;
 
-            // Start Time
-            $start = microtime(true);
+                  $apiResponse = $platform->get($uri);
+                              
+                  $ext = ($apiResponse->response()->getHeader('Content-Type')[0] == 'audio/mpeg')
+                  ? 'mp3' : 'wav';
 
-            // Write the recording 
-            file_put_contents("${recordingsDir}/recording_${'recordingID'}.${ext}", $apiResponse->raw());
-            $filename = "recording_${'recordingID'}.${ext}";
+                  // Start Time
+                  $start = microtime(true);
 
-            if(filesize("${recordingsDir}/recording_${'recordingID'}.${ext}") == 0) {
-              $status = "failure";
+                  // Write the recording 
+                  file_put_contents("${recordingsDir}/recording_${'recordingID'}.${ext}", $apiResponse->raw());
+                  $filename = "recording_${'recordingID'}.${ext}";
+
+                  if(filesize("${recordingsDir}/recording_${'recordingID'}.${ext}") == 0) {
+                    $status = "failure";
+                  }
+
+                  print "Finished downloading Recording for Call Log Record ${'recordingID'}" . PHP_EOL;
+
+                  // write the recording metadata
+                  file_put_contents("${jsonDir}/recording_${'recordingID'}.json", json_encode($callLogRecord));
+
+                  print "Finished downloading Metadata for Call Log Record ${'recordingID'}" . PHP_EOL;
+
+                  $end=microtime(true);
+
+                  // Check if the recording completed wihtin 6 seconds.
+                  $time = ($end*1000 - $start*1000) / 1000;
+                  if($time < $timePerRecording) {
+                      sleep($timePerRecording-$time);
+                  }
+
+                  // write to csv                       
+                  $fileContents = array($recordingID, $uri, $filename, $status);
+                  fputcsv($file, $fileContents);
+
+                  print "Downloaded Call Log Record : ". ${'recordingID'} . PHP_EOL;                  
+
             }
 
-            print "Finished downloading Recording for Call Log Record ${'recordingID'}" . PHP_EOL;
-
-            // write the recording metadata
-            file_put_contents("${jsonDir}/recording_${'recordingID'}.json", json_encode($callLogRecord));
-
-            print "Finished downloading Metadata for Call Log Record ${'recordingID'}" . PHP_EOL;
-
-            $end=microtime(true);
-
-            // Check if the recording completed wihtin 6 seconds.
-            $time = ($end*1000 - $start*1000) / 1000;
-            if($time < $timePerRecording) {
-                sleep($timePerRecording-$time);
+            else {
+              continue;
             }
 
-            // write to csv                       
-            $fileContents = array($recordingID, $uri, $filename, $status);
-            fputcsv($file, $fileContents);
-
-            print "Downloaded Call Log Record : ". ${'recordingID'} . PHP_EOL;    
-          
           }
-
-          // Check if there is next Page
-          if(isset($apiResponseJSONArray["navigation"]["nextPage"])) {  
-
-                    sleep(20);
-
-                    $pageCount = $pageCount + 1;
-                
-            }
-
-        else {
-            // set the flag equals False
-              $flag = False;
-        }
-
-
-      }
-
+            
         fclose($file);
 
       
