@@ -65,10 +65,12 @@ try {
             $dateTo = $_ENV['RC_dateTo'] . 'T' . $timeTo;
             // $dateTo = new DateTime($_ENV['RC_dateTo']);
                 
-            $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
+            $apiResponse = $platform->get('/account/~/call-log', array(
             'dateFrom' => $dateFrom,
+            'withRecording' => 'True',
             'dateTo' => $dateTo,
-            'perPage' => 10,
+            'type' => 'Voice',
+            'perPage' => 500,
             'page' => $pageCount
             ));
 
@@ -122,10 +124,6 @@ try {
                 $timestamp = strtotime($timeTo) + 60*60;
                 $timeTo = date('H:i:s', $timestamp);
                 print "The new Time To is :" . $timeTo . PHP_EOL;
-                // $dateFrom = $dateTo;
-                // print 'The new dateFrom is :' . $dateFrom->format(DateTime::ISO8601) . PHP_EOL;
-                // $dateTo = $dateTo->add(new DateInterval("PT60M"));
-                // print 'The new dateTo is :' . $dateTo->format(DateTime::ISO8601) . PHP_EOL;
             }
             
             else {

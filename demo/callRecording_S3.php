@@ -75,11 +75,11 @@ echo "\n";
         $callLogRecords = json_decode($callLogRecordsFromFile, true);
 
 
-          foreach ($callLogRecords as $i => $callLogRecord) {
+          foreach ($callLogRecords as $callLogRecord) {
 
             if($callLogRecord["recording"]) {
 
-                $recordingID = $callLogRecord["recording"]["id'"];
+                $recordingID = $callLogRecord["recording"]["id"];
                             
                 print "Downloading Call Log Record : ". $recordingID . PHP_EOL;
 
@@ -123,7 +123,7 @@ echo "\n";
           else {
               continue;
             }
-            
+
       }
 
 
