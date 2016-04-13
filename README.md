@@ -21,13 +21,41 @@ A Sample PHP command line application to : Generate Call Records ( with / withou
 $ git clone https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader.git
 ```
 
-cd into `RingCentral-Call-Generator-Recordings-Downloader` Run the Composer command to install the packages
+Cd into `RingCentral-Call-Generator-Recordings-Downloader`. Run the Composer command to install the packages
  
 ```sh
 $ composer install
 ```
 
-Create a `.env` file with the contents as **shown above** with your RingCentral Account details:
+Create a `.env` file with the contents as **shown below** and configure your RingCentral Account details:
+
+For ex: To run callRecording.php script make `RC_SkipDownload= False`
+		To skip callRecording.php script make `RC_SkipDownload= True` 
+
+```php
+
+RC_AppKey= 							
+RC_AppSecret= 
+RC_Server= 
+RC_Username= 
+RC_Extension= 
+RC_Password= 
+RC_fromPhoneNumber= 
+RC_toPhoneNumber= 
+RC_dateFrom= 
+RC_dateTo= 
+RC_callRecordingsCount= 
+amazonAccessKey= 
+amazonSecretKey= 
+dropBoxkey= 
+dropBoxsecret= 
+RC_SkipCallLog=           
+RC_SkipRingOut=         
+RC_SkipDownload=     
+RC_SkipDownloadS3= 
+RC_SkipDownloadDropbox=  
+
+```
 
 Then execute:
 
