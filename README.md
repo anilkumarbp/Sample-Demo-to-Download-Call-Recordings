@@ -27,7 +27,7 @@ Cd into `RingCentral-Call-Generator-Recordings-Downloader`. Run the Composer com
 $ composer install
 ```
 
-Create a `.env` file with the contents as **shown below** and configure your RingCentral Account details:
+Create a `.env` file within the same folder and the contents as **shown below** and configure your RingCentral Account details:
 
 For ex: To run callRecording.php script make `RC_SkipDownload= False`
 		To skip callRecording.php script make `RC_SkipDownload= True` 
