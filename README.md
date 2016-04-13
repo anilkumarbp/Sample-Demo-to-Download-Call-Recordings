@@ -14,7 +14,30 @@ A Sample PHP command line application to : Generate Call Records ( with / withou
 
 # Installation
 
-## Using the PHAR package  **( Recommended )**
+
+## Clone the Repository **( Recommended )**
+
+```sh
+$ git clone https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader.git
+```
+
+cd into `RingCentral-Call-Generator-Recordings-Downloader` Run the Composer command to install the packages
+ 
+```sh
+$ composer install
+```
+
+Create a `.env` file with the contents as **shown above** with your RingCentral Account details:
+
+Then execute:
+
+```sh
+$ php index.php
+```
+
+
+
+## Using the PHAR package 
 
 Download the PHAR file: [`Click Here for PHAR file`](https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader/releases/download/0.1.2/RC_CallRecordings_Download.phar)
 
@@ -58,28 +81,6 @@ Execute the PHAR file
 ```php
 $ php RC_CallRecordings_Download.phar
 ```
-
-
-## Clone the Repository
-
-```sh
-$ git clone https://github.com/anilkumarbp/RingCentral-Call-Generator-Recordings-Downloader.git
-```
-
-cd into `RingCentral-Call-Generator-Recordings-Downloader` Run the Composer command to install the packages
- 
-```sh
-$ composer install
-```
-
-Create a `.env` file with the contents as **shown above** with your RingCentral Account details:
-
-Then execute:
-
-```sh
-$ php index.php
-```
-
 
 
 # Basic Usage
