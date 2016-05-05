@@ -74,15 +74,16 @@ try {
             'page' => $pageCount
             ));
 
+            // print "The api response is :" . $apiResponse . PHP_EOL;
             // print dateFrom and dateTo
             // print 'DateFrom : ' . $dateFrom->format(DateTime::ISO8601) . PHP_EOL;
             // print 'DateTo :' . $dateTo->format(DateTime::ISO8601) . PHP_EOL;
             // // ApiResponse as jsonArray()
-            $apiResponseJSONArray = $apiResponse -> jsonArray();
+            // $apiResponseJSONArray = $apiResponse -> jsonArray();
 
             $apiResponseArray = $apiResponse->json()->records;
 
-            // $apiResponse->json()->records;
+            $apiResponse->json()->records;
 
             foreach ($apiResponseArray as $value) {
                 // json_encode($callLogs, FILE_APPEND, JSON_PRETTY_PRINT)

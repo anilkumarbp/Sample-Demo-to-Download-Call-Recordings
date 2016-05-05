@@ -12,6 +12,12 @@ A Sample PHP command line application to : Generate Call Records ( with / withou
 - Composer
 - CURL Extension
 
+# Configuration Items
+
+- What is the hourly interval/ range when they would like to pull down the recordings
+- What is the approximate call-recordgins count per day
+- The total number of accounts and the details
+
 # Installation
 
 

@@ -142,11 +142,17 @@ echo "\n";
             print 'The Response is :' . PHP_EOL;
             print_r($apiResponse->response());
             print PHP_EOL; 
-            
+
             // Another way to get message, but keep in mind, that there could be no response if request has failed completely
             print '  Message: ' . $e->apiResponse->response()->error() . PHP_EOL;
 
-        }
+            // write the missed recordingID's to file
+            $fname = $csvDir . DIRECTORY_SEPARATOR . 'recordings_' . $dir . '.csv';
+            $file = fopen($fname,'w');
+                // write to csv                       
+                $fileContents = array($recordingID, $uri, $filename, $status);
+                fputcsv($file, $fileContents);  
 
-                      
+        }
+            
 ?>
