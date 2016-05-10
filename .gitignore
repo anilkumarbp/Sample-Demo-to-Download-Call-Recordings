@@ -10,6 +10,7 @@ demo/Call-Logs
 demo/Csv
 demo/Json
 demo/Recordings
+modules/_cache
 dist
 build
 config.json
