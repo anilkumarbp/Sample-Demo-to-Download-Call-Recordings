@@ -23,5 +23,6 @@ $platform = $rcsdk->platform();
 
 
 // To authenticate
+require(__DIR__ . '/modules/util.php');
 require(__DIR__ . '/modules/auth.php');
-
+require(__DIR__ . '/modules/extension.php');
