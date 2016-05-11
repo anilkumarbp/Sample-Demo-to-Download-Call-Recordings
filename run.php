@@ -22,7 +22,8 @@ $rcsdk = new SDK($_ENV['RC_AppKey'], $_ENV['RC_AppSecret'], $_ENV['RC_Server'], 
 $platform = $rcsdk->platform();
 
 
-// To authenticate
 require(__DIR__ . '/modules/util.php');
 require(__DIR__ . '/modules/auth.php');
 require(__DIR__ . '/modules/extension.php');
+require(__DIR__ . '/modules/calllog.php');
+

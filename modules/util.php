@@ -1,5 +1,20 @@
 <?php
 
+$cacheDir = __DIR__ . DIRECTORY_SEPARATOR . '_cache';
+$appDataFile = $cacheDir . DIRECTORY_SEPARATOR . 'app_data.json';
+
+if (!file_exists($cacheDir)) {
+    mkdir($cacheDir);
+}
+
+$appData = array(
+    'lastRunningTime' => null
+);
+
+if (file_exists($appDataFile)) {
+    $appData = json_decode(file_get_contents($appDataFile), true);
+}
+
 function requestMultiPages($platform, $url, $options) {
     
     $results = array();
@@ -17,11 +32,19 @@ function requestMultiPages($platform, $url, $options) {
             array_push($results, $record);
         } 
         
-        $totalPages = $apiResponseJSONArray->paging->totalPages;
-        $page = $apiResponseJSONArray->paging->page;
-        if($page <= $totalPages) {
-            $pageCount = $pageCount + 1;
-            if($page == $totalPages) {
+        if(property_exists($apiResponseJSONArray->paging, 'totalPages')) {
+            $totalPages = $apiResponseJSONArray->paging->totalPages;
+            $page = $apiResponseJSONArray->paging->page;
+            if($page <= $totalPages) {
+                $pageCount = $pageCount + 1;
+                if($page == $totalPages) {
+                    $flag = false;
+                }
+            }
+        }else {
+            if(isset($apiResponseJSONArray->navigation->nextPage)){
+                $pageCount = $pageCount + 1;
+            }else{
                 $flag = false;
             }
         }
