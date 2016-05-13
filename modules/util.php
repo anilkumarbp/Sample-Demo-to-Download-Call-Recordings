@@ -52,3 +52,31 @@ function requestMultiPages($platform, $url, $options) {
     
     return $results;
 }
+
+function retrieveRecording($platform, $callLog) {
+    $uri = $callLog->recording->contentUri;
+    $apiResponse = $platform->get($uri);
+    $ext = ($apiResponse->response()->getHeader('Content-Type')[0] == 'audio/mpeg')
+        ? 'mp3' : 'wav';
+    return array(
+        'ext' => $ext,
+        'data' => $apiResponse->raw()
+    );    
+}
+
+function getExtension($number, $phoneNumbers, $extensions) {
+    foreach ($phoneNumbers as $phoneNumber) {
+        if($number == $phoneNumber->phoneNumber) {
+            foreach ($extensions as $ext) {
+                if(isset($phoneNumber->extension)){
+                    print($ext->extensionNumber);
+                    if($ext->extensionNumber == $phoneNumber->extension->extensionNumber) {
+                        return $ext;
+                    }    
+                }
+            }
+        }
+    }
+    
+    return null;
+}

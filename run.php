@@ -27,3 +27,11 @@ require(__DIR__ . '/modules/auth.php');
 require(__DIR__ . '/modules/extension.php');
 require(__DIR__ . '/modules/calllog.php');
 
+foreach ($callLogs as $callLog) {
+    $recording = retrieveRecording($platform, $callLog);
+    $filePaths = array();
+    require('./modules/file_struct_s3_test.php');
+    require('./modules/save_recording_s3_test.php');
+    
+}
+

@@ -14,7 +14,7 @@ try {
     }
     
     $phoneNumbers = requestMultiPages($platform, '/account/~/phone-number', array(
-        'usageType' => array('DirectNumber'),
+        'usageType' => 'DirectNumber',
         'perPage' => 500,
         'page' => 1
     ));
