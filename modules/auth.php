@@ -3,15 +3,7 @@
 try {
 
     // Retrieve previous authentication data
-    $cacheDir = __DIR__ . DIRECTORY_SEPARATOR . '_cache';
-    $file = $cacheDir . DIRECTORY_SEPARATOR . 'platform.json';
-
-    if (!file_exists($cacheDir)) {
-        mkdir($cacheDir);
-    }
-
-    function authorize($platform, $file) {
-    }
+    $file = $cacheDir.'/platform.json';
     
     if (file_exists($file)) {
         $cachedAuth = json_decode(file_get_contents($file), true);

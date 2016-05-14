@@ -1,8 +1,8 @@
 <?php
 
-$cacheDir = __DIR__ . DIRECTORY_SEPARATOR . '_cache';
-$appDataFile = $cacheDir . DIRECTORY_SEPARATOR . 'app_data.json';
-$logFile = $cacheDir.DIRECTORY_SEPARATOR.'log';
+$cacheDir = './_cache';
+$appDataFile = $cacheDir . '/app_data.json';
+$logFile = $cacheDir.'/log';
 
 if (!file_exists($cacheDir)) {
     mkdir($cacheDir);

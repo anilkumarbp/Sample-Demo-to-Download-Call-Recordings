@@ -21,15 +21,17 @@ $rcsdk = new SDK($_ENV['RC_AppKey'], $_ENV['RC_AppSecret'], $_ENV['RC_Server'], 
 $platform = $rcsdk->platform();
 
 
-require(__DIR__ . '/modules/util.php');
+require('./modules/util.php');
 
 rcLog($logFile, 0, 'Application Start');
 
-require(__DIR__ . '/modules/auth.php');
-require(__DIR__ . '/modules/extension.php');
-require(__DIR__ . '/modules/calllog.php');
+require('./modules/auth.php');
+require('./modules/extension.php');
+require('./modules/calllog.php');
 
-rcLog($logFile, 0, 'Start to retrieve recordings!');
+if(count($callLogs) > 0) {
+    rcLog($logFile, 0, 'Start to retrieve recordings!');
+}
 
 foreach ($callLogs as $callLog) {
     try{
