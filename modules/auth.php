@@ -25,11 +25,10 @@ try {
     }
     file_put_contents($file, json_encode($platform->auth()->data(), JSON_PRETTY_PRINT));
     
-    print 'Authorization was restored' . PHP_EOL;
+    rcLog($logFile, 0, 'Authorization was restored');
 
 } catch (Exception $e) {
-
-    print 'Auth exception: ' . $e->getMessage() . PHP_EOL;
+    rcLog($logFile, 1, 'Error occurs when authorization: ' . $e->getMessage());
     throw $e;    
 }	
 

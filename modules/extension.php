@@ -7,10 +7,10 @@ try {
         'page' => 1
     ));
     
-    print("--------Extensions are loaded!--------\n");
+
+    rcLog($logFile, 0, "Extension Loaded!");
     foreach ($accountExtensions as $extension) {
-        print($extension->extensionNumber . ":" . $extension->name);
-        print("\n");
+        rcLog($logFile, 0, $extension->extensionNumber . ":" . $extension->name);
     }
     
     $phoneNumbers = requestMultiPages($platform, '/account/~/phone-number', array(
@@ -19,15 +19,13 @@ try {
         'page' => 1
     ));
     
-    print("--------Phone numbers are loaded!--------\n");
+    rcLog($logFile, 0, "Phone Numbers Loaded!");
     foreach ($phoneNumbers as $number) {
-        print($number->phoneNumber);
-        print("\n");
+        rcLog($logFile, 0, $number->phoneNumber);
     }
     
 } catch (Exception $e) {
-
-    print 'Error occurs when retrieving extension and phone numbers -> ' . $e->getMessage() . PHP_EOL;
+    rcLog($logFile, 1, 'Error occurs when retrieving extension and phone numbers -> ' . $e->getMessage());
     throw $e;    
 }	
 

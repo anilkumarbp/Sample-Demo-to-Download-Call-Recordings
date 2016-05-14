@@ -27,15 +27,15 @@ try {
     
     file_put_contents($appDataFile, json_encode($appData, JSON_PRETTY_PRINT));
     
-    print("--------Call Logs are loaded!--------\n");
-    foreach ($callLogs as $callLog) {
-        print($callLog->uri);
-        print("\n");
+    if(count($callLogs) > 0) {
+        rcLog($logFile, 0, 'Call Logs Loaded!');
+        foreach ($callLogs as $callLog) {
+            rcLog($logFile, 0, $callLog->uri);
+        }
     }
     
 } catch (Exception $e) {
-
-    print 'Error occurs when retrieving call logs -> ' . $e->getMessage() . PHP_EOL;
+    rcLog($logFile, 1, 'Error occurs when retrieving call logs -> ' . $e->getMessage());
     throw $e;    
 }	
 

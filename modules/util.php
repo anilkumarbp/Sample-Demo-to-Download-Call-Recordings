@@ -2,6 +2,7 @@
 
 $cacheDir = __DIR__ . DIRECTORY_SEPARATOR . '_cache';
 $appDataFile = $cacheDir . DIRECTORY_SEPARATOR . 'app_data.json';
+$logFile = $cacheDir.DIRECTORY_SEPARATOR.'log';
 
 if (!file_exists($cacheDir)) {
     mkdir($cacheDir);
@@ -59,6 +60,7 @@ function retrieveRecording($platform, $callLog) {
     $ext = ($apiResponse->response()->getHeader('Content-Type')[0] == 'audio/mpeg')
         ? 'mp3' : 'wav';
     return array(
+        'id' => $callLog->recording->id,
         'ext' => $ext,
         'data' => $apiResponse->raw()
     );    
@@ -79,4 +81,11 @@ function getExtension($number, $phoneNumbers, $extensions) {
     }
     
     return null;
+}
+
+function rcLog($logFile, $level, $message) {
+    if($level >= $_ENV['Log_Level']) {
+        $currentTime = date('Y-m-d H:i:s', time());
+        file_put_contents($logFile, $currentTime." -> ".$message.PHP_EOL, FILE_APPEND);
+    }
 }
