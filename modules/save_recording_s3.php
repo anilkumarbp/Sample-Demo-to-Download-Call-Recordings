@@ -24,8 +24,8 @@ if(count($filePaths) > 0) {
     file_put_contents($s3FileName, $recording['data']);
 
     if(filesize($s3FileName) == 0) {
-        rcLog($logFile, 1, 'Fail to send recording '.$recording['id'].' to S3 '.$s3FileName);
+        rcLog($global_logFile, 1, 'Fail to send recording '.$recording['id'].' to S3 '.$s3FileName);
     }else {
-        rcLog($logFile, 0, 'Successfully send recording '.$recording['id'].' to S3 '.$s3FileName);
+        rcLog($global_logFile, 0, 'Successfully send recording '.$recording['id'].' to S3 '.$s3FileName);
     }
 }

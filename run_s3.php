@@ -20,27 +20,27 @@ require('./modules/_bootstrap.php');
 $rcsdk = new SDK($_ENV['RC_AppKey'], $_ENV['RC_AppSecret'], $_ENV['RC_Server'], 'App', '1.0');
 $platform = $rcsdk->platform();
 
-
+require('./modules/init.php');
 require('./modules/util.php');
 
-rcLog($logFile, 0, 'Application Start');
+rcLog($global_logFile, 0, 'Application Start');
 
 require('./modules/auth.php');
 require('./modules/extension.php');
 require('./modules/calllog.php');
 
-if(count($callLogs) > 0) {
-    rcLog($logFile, 0, 'Start to retrieve recordings!');
+if(count($global_callLogs) > 0) {
+    rcLog($global_logFile, 0, 'Start to retrieve recordings!');
 }
 
-foreach ($callLogs as $callLog) {
+foreach ($global_callLogs as $callLog) {
     try{
         $recording = retrieveRecording($platform, $callLog);
         $filePaths = array();
         require('./modules/file_struct_s3.php');
         require('./modules/save_recording_s3.php');
     }catch(Exception $e) {
-        rcLog($logFile, 1, 'Error occurs when sending recording '.$callLog->recording->id.' -> ' . $e->getMessage());
+        rcLog($global_logFile, 1, 'Error occurs when sending recording '.$callLog->recording->id.' -> ' . $e->getMessage());
     }
 }
 

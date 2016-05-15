@@ -1,21 +1,5 @@
 <?php
 
-$cacheDir = './_cache';
-$appDataFile = $cacheDir . '/app_data.json';
-$logFile = $cacheDir.'/log';
-
-if (!file_exists($cacheDir)) {
-    mkdir($cacheDir);
-}
-
-$appData = array(
-    'lastRunningTime' => null
-);
-
-if (file_exists($appDataFile)) {
-    $appData = json_decode(file_get_contents($appDataFile), true);
-}
-
 function requestMultiPages($platform, $url, $options) {
     
     $results = array();

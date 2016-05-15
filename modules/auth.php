@@ -3,7 +3,7 @@
 try {
 
     // Retrieve previous authentication data
-    $file = $cacheDir.'/platform.json';
+    $file = $global_cacheDir.'/platform.json';
     
     if (file_exists($file)) {
         $cachedAuth = json_decode(file_get_contents($file), true);
@@ -17,10 +17,10 @@ try {
     }
     file_put_contents($file, json_encode($platform->auth()->data(), JSON_PRETTY_PRINT));
     
-    rcLog($logFile, 0, 'Authorization was restored');
+    rcLog($global_logFile, 0, 'Authorization was restored');
 
 } catch (Exception $e) {
-    rcLog($logFile, 1, 'Error occurs when authorization: ' . $e->getMessage());
+    rcLog($global_logFile, 1, 'Error occurs when authorization: ' . $e->getMessage());
     throw $e;    
 }	
 
