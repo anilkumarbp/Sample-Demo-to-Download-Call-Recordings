@@ -44,3 +44,5 @@ foreach ($global_callLogs as $callLog) {
     }
 }
 
+file_put_contents($global_appDataFile, json_encode($global_appData, JSON_PRETTY_PRINT));
+

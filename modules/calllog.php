@@ -40,8 +40,6 @@ try {
     
     $global_appData['lastRunningTime'] = $currentTime;
     
-    file_put_contents($global_appDataFile, json_encode($global_appData, JSON_PRETTY_PRINT));
-    
     if(count($global_callLogs) > 0) {
         rcLog($global_logFile, 0, 'Call Logs Loaded!');
         foreach ($global_callLogs as $callLog) {
