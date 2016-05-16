@@ -10,7 +10,9 @@ try {
 
     rcLog($global_logFile, 0, "Extension Loaded!");
     foreach ($global_accountExtensions as $extension) {
-        rcLog($global_logFile, 0, $extension->extensionNumber . ":" . $extension->name);
+        if(property_exists($extension, 'extensionNumber')) {
+            rcLog($global_logFile, 0, $extension->extensionNumber . ":" . $extension->name);
+        }
     }
     
     $global_phoneNumbers = requestMultiPages($platform, '/account/~/phone-number', array(
