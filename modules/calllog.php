@@ -14,14 +14,29 @@ try {
         }
     }
 
-    $global_callLogs = requestMultiPages($platform, '/account/~/call-log', array(
-        'withRecording' => 'True',
-        'dateFrom' => date('Y-m-d\TH:i:s\Z', $dateFromTime),
-        'dateTo' => date('Y-m-d\TH:i:s\Z', $dateToTime),
-        'type' => 'Voice',
-        'perPage' => 500,
-        'page' => 1
-    ));
+    function getCallLogs($platform, $dateFromTime, $dateToTime) {
+        try{
+            return requestMultiPages($platform, '/account/~/call-log', array(
+                'withRecording' => 'True',
+                'dateFrom' => date('Y-m-d\TH:i:s\Z', $dateFromTime),
+                'dateTo' => date('Y-m-d\TH:i:s\Z', $dateToTime),
+                'type' => 'Voice',
+                'perPage' => 500,
+                'page' => 1
+            ));
+        }
+        catch(Exception $e){
+            $diff = floor(($dateToTime - $dateFromTime + 1) / 2);
+            if($diff < 300) {
+                throw $e;
+            }else {
+                return array_merge(getCallLogs($dateFromTime, $dateFromTime + $diff), 
+                    getCallLogs($dateFromTime + $diff + 1, $dateToTime));       
+            }
+        }
+    }
+
+    $global_callLogs = getCallLogs($platform, $dateFromTime, $dateToTime);
     
     $global_appData['lastRunningTime'] = $currentTime;
     
