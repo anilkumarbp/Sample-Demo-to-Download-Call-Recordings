@@ -28,4 +28,6 @@ if(count($filePaths) > 0) {
     }else {
         rcLog($global_logFile, 0, 'Successfully send recording '.$recording['id'].' to S3 '.$s3FileName);
     }
+    
+    $totalFileSize += filesize($s3FileName);
 }

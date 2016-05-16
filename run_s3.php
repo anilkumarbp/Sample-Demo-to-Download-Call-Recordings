@@ -33,7 +33,10 @@ if(count($global_callLogs) > 0) {
     rcLog($global_logFile, 0, 'Start to retrieve recordings!');
 }
 
+$count = 0;
+$totalFileSize = 0;
 foreach ($global_callLogs as $callLog) {
+    $startTime = microtime(true);
     try{
         $recording = retrieveRecording($platform, $callLog);
         $filePaths = array();
@@ -41,6 +44,12 @@ foreach ($global_callLogs as $callLog) {
         require('./modules/save_recording_s3.php');
     }catch(Exception $e) {
         rcLog($global_logFile, 1, 'Error occurs when sending recording '.$callLog->recording->id.' -> ' . $e->getMessage());
+    }
+    $count++;
+    if($count == 19) {
+        $endTime = microtime(true);
+        rcLog($global_logFile, 0, 'Save 20 recordings(Size of '.$totalFileSize.') for '.(($startTime-$endTime)*1000). 'milliseconds.');
+        break;
     }
 }
 
