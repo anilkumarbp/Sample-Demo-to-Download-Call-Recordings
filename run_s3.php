@@ -48,7 +48,7 @@ foreach ($global_callLogs as $callLog) {
     $count++;
     if($count == 19) {
         $endTime = microtime(true);
-        rcLog($global_logFile, 0, 'Save 20 recordings(Size of '.$totalFileSize.') for '.(($startTime-$endTime)*1000). 'milliseconds.');
+        rcLog($global_logFile, 0, 'Save 20 recordings(Size of '.$totalFileSize.') for '.($endTime - $startTime). ' seconds.');
         break;
     }
 }
