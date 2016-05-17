@@ -76,7 +76,12 @@ function getExtension($number, $phoneNumbers, $extensions) {
 function rcLog($logFile, $level, $message) {
     if($level >= $_ENV['Log_Level']) {
         $currentTime = date('Y-m-d H:i:s', time());
-        $info = $level==0?"Info":"Error";
+        $info = 'Info';
+        if($level == 1){
+            $info = 'Debug';
+        }else if($level == 2) {
+            $info = 'Error';
+        }
         file_put_contents($logFile, $currentTime."[".$info."]"." -> ".$message.PHP_EOL, FILE_APPEND);
     }
 }
