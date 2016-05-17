@@ -20,7 +20,7 @@ try {
     rcLog($global_logFile, 0, 'Authorization was restored');
 
 } catch (Exception $e) {
-    rcLog($global_logFile, 1, 'Error occurs when authorization: ' . $e->getMessage());
+    rcLog($global_logFile, 2, 'Error occurs when authorization: ' . $e->getMessage());
     throw $e;    
 }	
 

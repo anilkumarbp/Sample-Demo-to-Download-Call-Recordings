@@ -38,14 +38,14 @@ try {
     
     
     if(count($global_callLogs) > 0) {
-        rcLog($global_logFile, 0, 'Call Logs Loaded!');
+        rcLog($global_logFile, 1, count($global_callLogs).' Call Logs Loaded!');
         foreach ($global_callLogs as $callLog) {
             rcLog($global_logFile, 0, $callLog->uri);
         }
     }
     
 } catch (Exception $e) {
-    rcLog($global_logFile, 1, 'Error occurs when retrieving call logs -> ' . $e->getMessage());
+    rcLog($global_logFile, 2, 'Error occurs when retrieving call logs -> ' . $e->getMessage());
     throw $e;    
 }	
 

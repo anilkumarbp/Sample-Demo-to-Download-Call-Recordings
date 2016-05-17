@@ -31,6 +31,8 @@ foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
     if(!flock($fo, LOCK_EX, $wouldBlock)){
         continue;
     }else {
+        rcLog($global_logFile, 1, 'Start to transfer recordings in file '.$fileName);
+
         $callLogs = json_decode(fread($fo, $length), true);
         $errorArray = array();
         foreach($callLogs as $callLog) {
