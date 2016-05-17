@@ -3,6 +3,7 @@
 $global_cacheDir = './_cache';
 $global_appDataFile = $global_cacheDir . '/app_data.json';
 $global_logFile = $global_cacheDir.'/log';
+$global_currentTime = time();
 
 $global_accountExtensions = null;
 $global_phoneNumbers = null;

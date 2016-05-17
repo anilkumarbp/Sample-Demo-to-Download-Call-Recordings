@@ -4,12 +4,11 @@ try {
     
     $maxRetrieveTimeSpan = $_ENV['RC_maxRetrieveTimespan'];
 
-    $currentTime = time();
-    $dateFromTime = $currentTime - $maxRetrieveTimeSpan;
-    $dateToTime = $currentTime;
+    $dateFromTime = $global_currentTime - $maxRetrieveTimeSpan;
+    $dateToTime = $global_currentTime;
     
     if(isset($global_appData['lastRunningTime'])){
-        if($currentTime - $global_appData['lastRunningTime'] <= $maxRetrieveTimeSpan) {
+        if($global_currentTime - $global_appData['lastRunningTime'] <= $maxRetrieveTimeSpan) {
             $dateFromTime = $global_appData['lastRunningTime'] + 1;
         }
     }
@@ -21,8 +20,7 @@ try {
                 'dateFrom' => date('Y-m-d\TH:i:s\Z', $dateFromTime),
                 'dateTo' => date('Y-m-d\TH:i:s\Z', $dateToTime),
                 'type' => 'Voice',
-                'perPage' => 500,
-                'page' => 1
+                'perPage' => 1000
             ));
         }
         catch(Exception $e){
@@ -38,7 +36,6 @@ try {
 
     $global_callLogs = getCallLogs($platform, $dateFromTime, $dateToTime);
     
-    $global_appData['lastRunningTime'] = $currentTime;
     
     if(count($global_callLogs) > 0) {
         rcLog($global_logFile, 0, 'Call Logs Loaded!');

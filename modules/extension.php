@@ -3,8 +3,7 @@
 try {
 
     $global_accountExtensions = requestMultiPages($platform, '/account/~/extension', array(
-        'perPage' => 500,
-        'page' => 1
+        'perPage' => 500
     ));
     
 
@@ -17,8 +16,7 @@ try {
     
     $global_phoneNumbers = requestMultiPages($platform, '/account/~/phone-number', array(
         'usageType' => 'DirectNumber',
-        'perPage' => 500,
-        'page' => 1
+        'perPage' => 500
     ));
     
     rcLog($global_logFile, 0, "Phone Numbers Loaded!");

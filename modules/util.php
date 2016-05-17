@@ -8,7 +8,8 @@ function requestMultiPages($platform, $url, $options) {
     $flag = true;
     
     while($flag) {
-
+        
+        $options['page'] = $pageCount;
         $apiResponse = $platform->get($url, $options);
         $apiResponseJSONArray = $apiResponse->json();
         $records = $apiResponseJSONArray->records;
@@ -39,18 +40,24 @@ function requestMultiPages($platform, $url, $options) {
 }
 
 function retrieveRecording($platform, $callLog) {
-    $uri = $callLog->recording->contentUri;
+    $uri = $callLog['recordingUrl'];
     $apiResponse = $platform->get($uri);
     $ext = ($apiResponse->response()->getHeader('Content-Type')[0] == 'audio/mpeg')
         ? 'mp3' : 'wav';
     return array(
-        'id' => $callLog->recording->id,
         'ext' => $ext,
         'data' => $apiResponse->raw()
     );    
 }
 
 function getExtension($number, $phoneNumbers, $extensions) {
+    
+    foreach($extensions as $ext) {
+        if($number == $ext->extensionNumber) {
+            return $ext;
+        }
+    }
+    
     foreach ($phoneNumbers as $phoneNumber) {
         if($number == $phoneNumber->phoneNumber) {
             foreach ($extensions as $ext) {

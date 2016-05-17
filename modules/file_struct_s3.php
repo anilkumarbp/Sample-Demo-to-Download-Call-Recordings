@@ -3,16 +3,24 @@
 $number = null;
 
 if($callLog->direction == "Inbound") {
-    $number = $callLog->to->phoneNumber;
+    if(property_exists($callLog->to, 'phoneNumber')){
+        $number = $callLog->to->phoneNumber;
+    }else{
+        $number = $callLog->to->extensionNumber;
+    }
 }else{
-    $number = $callLog->from->phoneNumber;
+    if(property_exists($callLog->from, 'phoneNumber')){
+        $number = $callLog->from->phoneNumber;
+    }else{
+        $number = $callLog->from->extensionNumber;
+    }
 }
 
-$extension = getExtension($number, $global_phoneNumbers, $global_accountExtensions);
+$extension = getExtension($number, $phoneNumbers, $accountExtensions);
 if(!is_null($extension)){
-    array_push($filePaths, $extension->name, substr($callLog->startTime, 0, 10), 
-        substr($callLog->startTime, 11, 8)."_".$callLog->recording->id.".".$recording['ext']);
+    $filePath = ($extension->name).'/'.substr($callLog->startTime, 0, 10).'/'.
+        substr($callLog->startTime, 11, 8)."_".$callLog->recording->id;
 }else {
-    array_push($filePaths, $number, substr($callLog->startTime, 0, 10), 
-        substr($callLog->startTime, 11, 8)."_".$callLog->recording->id.".".$recording['ext']);
+    $filePath = $number.'/'.substr($callLog->startTime, 0, 10).'/'.
+        substr($callLog->startTime, 11, 8)."_".$callLog->recording->id;
 }
