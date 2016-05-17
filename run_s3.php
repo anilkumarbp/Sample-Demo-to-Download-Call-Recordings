@@ -53,6 +53,9 @@ foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
         }
         flock($fo, LOCK_UN); 
         fclose($fo); 
+        
+        rcLog($global_logFile, 1, 'Finish transferring recordings in file '.$fileName);
+
         unlink($fileName);
         break;
     }
