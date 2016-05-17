@@ -1,7 +1,6 @@
 <?php
 
-$totalFileCount = $_ENV['RC_requestPool'];
-$callLogInEachFile = floor(count($global_callLogs)/$totalFileCount);
+$callLogInEachFile = $_ENV['RC_requestLimit'] / $_ENV['RC_requestPool'];
 
 function saveCallLogToFile($callLogs, $filePath){
     $fo = fopen($filePath, 'w+'); 
@@ -30,6 +29,8 @@ function getCallLogItems($callLogs, $accountExtensions, $phoneNumbers){
 $filePrefix = 'calllog_'.date('Ymd_His', $global_currentTime);
 try{
     $count = 0;
+    $totalFileCount = floor(count($global_callLogs)/$callLogInEachFile) + 1;
+    
     while($count < $totalFileCount - 1){
         $slice = array_slice($global_callLogs, $count * $callLogInEachFile, $callLogInEachFile);
         $filePath = $global_cacheDir.'/'.$filePrefix.'_'.$count.'.json';

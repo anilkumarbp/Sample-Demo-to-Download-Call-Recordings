@@ -31,7 +31,6 @@ foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
     if(!flock($fo, LOCK_EX, $wouldBlock)){
         continue;
     }else {
-        
         $callLogs = json_decode(fread($fo, $length), true);
         $errorArray = array();
         foreach($callLogs as $callLog) {
