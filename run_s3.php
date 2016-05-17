@@ -50,6 +50,8 @@ foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
             fflush($ferror);
             flock($ferror, LOCK_UN); 
             fclose($ferror); 
+            
+            rcLog($global_logFile, 1, 'Not able to transfer '.count($errorArray). ' recordings. Saved to file '.$fileName);
         }
         flock($fo, LOCK_UN); 
         fclose($fo); 
