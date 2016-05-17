@@ -24,11 +24,10 @@ require('./modules/init.php');
 require('./modules/util.php');
 require('./modules/auth.php');
 
-$wouldBlock = false;
 foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
     $fo = fopen($fileName, 'r'); 
     $length = filesize($fileName);
-    if(!flock($fo, LOCK_EX, $wouldBlock)){
+    if(!flock($fo, LOCK_EX | LOCK_NB)){
         continue;
     }else {
         rcLog($global_logFile, 1, 'Start to transfer recordings in file '.$fileName);
