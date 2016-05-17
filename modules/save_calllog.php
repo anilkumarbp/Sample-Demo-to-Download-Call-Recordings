@@ -5,7 +5,8 @@ $callLogInEachFile = floor(count($global_callLogs)/$totalFileCount);
 
 function saveCallLogToFile($callLogs, $filePath){
     $fo = fopen($filePath, 'w+'); 
-    flock($fo, LOCK_EX); 
+    $wouldBlock = true;
+    flock($fo, LOCK_EX, $wouldBlock); 
     fwrite($fo, json_encode($callLogs, JSON_PRETTY_PRINT));
     fflush($fo);
     flock($fo, LOCK_UN); 

@@ -24,12 +24,14 @@ require('./modules/init.php');
 require('./modules/util.php');
 require('./modules/auth.php');
 
+$wouldBlock = false;
 foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
     $fo = fopen($fileName, 'r'); 
     $length = filesize($fileName);
-    if(!flock($fo, LOCK_EX)){
+    if(!flock($fo, LOCK_EX, $wouldBlock)){
         continue;
     }else {
+        
         $callLogs = json_decode(fread($fo, $length), true);
         $errorArray = array();
         foreach($callLogs as $callLog) {
@@ -42,7 +44,7 @@ foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
             }
         }
         if(count($errorArray) > 0) {
-            $ferror = fopen($global_cacheDir.'/calllog_error_'.date('Ymd_His', time()).',json', 'w+');
+            $ferror = fopen($global_cacheDir.'/calllog_error_'.date('Ymd_His', time()).'.json', 'w+');
             flock($ferror, LOCK_EX); 
             fwrite($ferror, json_encode($errorArray, JSON_PRETTY_PRINT));
             fflush($ferror);
