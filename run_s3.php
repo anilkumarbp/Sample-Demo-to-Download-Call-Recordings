@@ -22,6 +22,10 @@ $platform = $rcsdk->platform();
 
 require('./modules/init.php');
 require('./modules/util.php');
+
+rcLog($global_logFile, 1, 'Start to send recordings to S3');
+
+
 require('./modules/auth.php');
 
 foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
@@ -56,7 +60,7 @@ foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
         flock($fo, LOCK_UN); 
         fclose($fo); 
         
-        rcLog($global_logFile, 1, 'Finish transferring recordings in file '.$fileName);
+        rcLog($global_logFile, 1, 'Finish transferring '.(count($callLogs) - count($errorArray)).' recordings in file '.$fileName);
 
         unlink($fileName);
         break;

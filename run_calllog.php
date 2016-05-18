@@ -23,7 +23,7 @@ $platform = $rcsdk->platform();
 require('./modules/init.php');
 require('./modules/util.php');
 
-rcLog($global_logFile, 0, 'Application Start');
+rcLog($global_logFile, 1, 'Start to retrieve call logs from RingCentral PAS.');
 
 require('./modules/auth.php');
 require('./modules/extension.php');

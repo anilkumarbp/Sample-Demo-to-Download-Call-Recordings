@@ -28,8 +28,8 @@ try {
             if($diff < 300) {
                 throw $e;
             }else {
-                return array_merge(getCallLogs($dateFromTime, $dateFromTime + $diff), 
-                    getCallLogs($dateFromTime + $diff + 1, $dateToTime));       
+                return array_merge(getCallLogs($platform, $dateFromTime, $dateFromTime + $diff), 
+                    getCallLogs($platform, $dateFromTime + $diff + 1, $dateToTime));       
             }
         }
     }
