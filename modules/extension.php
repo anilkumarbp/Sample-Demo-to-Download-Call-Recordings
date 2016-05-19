@@ -21,7 +21,12 @@ try {
     
     rcLog($global_logFile, 1, count($global_phoneNumbers)." Phone Numbers Loaded!");
     foreach ($global_phoneNumbers as $number) {
-        rcLog($global_logFile, 0, $number->phoneNumber);
+        if(property_exists($number, 'extension')){
+            rcLog($global_logFile, 0, $number->extension->extensionNumber . ':' . $number->phoneNumber);
+        }
+        else{
+            rcLog($global_logFile, 0, $number->phoneNumber);
+        }
     }
     
 } catch (Exception $e) {

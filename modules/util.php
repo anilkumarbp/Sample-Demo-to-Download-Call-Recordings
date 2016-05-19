@@ -63,7 +63,7 @@ function getExtension($number, $phoneNumbers, $extensions) {
     foreach ($phoneNumbers as $phoneNumber) {
         if($number == $phoneNumber->phoneNumber) {
             foreach ($extensions as $ext) {
-                if(isset($phoneNumber->extension) && property_exists($ext, 'extentionNumber')){
+                if(isset($phoneNumber->extension) && property_exists($ext, 'extensionNumber')){
                     if($ext->extensionNumber == $phoneNumber->extension->extensionNumber) {
                         return $ext;
                     }    
