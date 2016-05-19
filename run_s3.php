@@ -38,13 +38,23 @@ foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
 
         $callLogs = json_decode(fread($fo, $length), true);
         $errorArray = array();
+        $startWorkingTime = time();
+        $exceedOneMinute = false;
         foreach($callLogs as $callLog) {
             try{
-                $recording = retrieveRecording($platform, $callLog);
-                require('./modules/save_recording_s3.php');
+                if(!$exceedOneMinute){
+                    $recording = retrieveRecording($platform, $callLog);
+                    require('./modules/save_recording_s3.php');    
+                }else {
+                    $callLog['error'] = 'Processing time on this file exceeds 1 minute.';
+                    array_push($errorArray, $callLog);
+                }
             }catch(Exception $e){
                 $callLog['error'] = $e->getMessage();
                 array_push($errorArray, $callLog);
+            }
+            if(time() - $startWorkingTime >= 60) {
+                $exceedOneMinute = true;
             }
         }
         if(count($errorArray) > 0) {
