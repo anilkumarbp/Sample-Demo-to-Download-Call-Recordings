@@ -29,19 +29,23 @@ function getCallLogItems($callLogs, $accountExtensions, $phoneNumbers){
 $filePrefix = 'calllog_'.date('Ymd_His', $global_currentTime);
 try{
     $count = 0;
-    $totalFileCount = floor(count($global_callLogs)/$callLogInEachFile) + 1;
     
-    while($count < $totalFileCount - 1){
-        $slice = array_slice($global_callLogs, $count * $callLogInEachFile, $callLogInEachFile);
+    if(count($global_callLogs) > 0) {
+        $totalFileCount = floor(count($global_callLogs)/$callLogInEachFile) + 1;
+    
+        while($count < $totalFileCount - 1){
+            $slice = array_slice($global_callLogs, $count * $callLogInEachFile, $callLogInEachFile);
+            $filePath = $global_cacheDir.'/'.$filePrefix.'_'.$count.'.json';
+            saveCallLogToFile(getCallLogItems($slice, $global_accountExtensions, $global_phoneNumbers), $filePath);
+            $count++;
+        }
+        
+        $count = $totalFileCount - 1;
+        $slice = array_slice($global_callLogs, $count * $callLogInEachFile);
         $filePath = $global_cacheDir.'/'.$filePrefix.'_'.$count.'.json';
         saveCallLogToFile(getCallLogItems($slice, $global_accountExtensions, $global_phoneNumbers), $filePath);
-        $count++;
     }
     
-    $count = $totalFileCount - 1;
-    $slice = array_slice($global_callLogs, $count * $callLogInEachFile);
-    $filePath = $global_cacheDir.'/'.$filePrefix.'_'.$count.'.json';
-    saveCallLogToFile(getCallLogItems($slice, $global_accountExtensions, $global_phoneNumbers), $filePath);
 }catch(Exception $e) {
     //In exceptions, we delete all created files in this cycle.
     foreach(glob($global_cacheDir."/".$filePrefix."*.json") as $fileName) {
