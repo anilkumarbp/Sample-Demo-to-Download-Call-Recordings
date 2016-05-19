@@ -53,15 +53,17 @@ function retrieveRecording($platform, $callLog) {
 function getExtension($number, $phoneNumbers, $extensions) {
     
     foreach($extensions as $ext) {
-        if($number == $ext->extensionNumber) {
-            return $ext;
+        if(property_exists($ext, 'extensionNumber')){
+            if($number == $ext->extensionNumber) {
+                return $ext;
+            }    
         }
     }
     
     foreach ($phoneNumbers as $phoneNumber) {
         if($number == $phoneNumber->phoneNumber) {
             foreach ($extensions as $ext) {
-                if(isset($phoneNumber->extension)){
+                if(isset($phoneNumber->extension) && property_exists($ext, 'extentionNumber')){
                     if($ext->extensionNumber == $phoneNumber->extension->extensionNumber) {
                         return $ext;
                     }    
