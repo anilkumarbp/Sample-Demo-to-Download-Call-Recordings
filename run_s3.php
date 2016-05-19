@@ -28,7 +28,13 @@ rcLog($global_logFile, 1, 'Start to send recordings to S3');
 
 require('./modules/auth.php');
 
-foreach(glob($global_cacheDir."/calllog*.json") as $fileName) {
+$fileNames = glob($global_cacheDir."/calllog*.json");
+
+if(count($fileNames) == 0) {
+    rcLog($global_logFile, 1, 'No recordings are found. Finish sending process.');
+}
+
+foreach($fileNames as $fileName) {
     $fo = fopen($fileName, 'r'); 
     $length = filesize($fileName);
     if(!flock($fo, LOCK_EX | LOCK_NB)){
