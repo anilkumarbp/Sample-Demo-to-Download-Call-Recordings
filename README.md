@@ -6,6 +6,22 @@ A PHP command line application to transfer call recordings from RingCentral serv
 
 This application contains two entry points. One is run_calllog.php which gets call logs from RingCentral server and save call logs as temp files in `_cache` folder. Another one is run_s3.php which retrieves recordings based on call logs get in last script and then send recordings to S3. Each script should be run in a regular timespan respectively.  
 
+#Installation
+
+Use 
+
+```
+git clone 
+```
+
+to clone the app. And then 
+```
+cd RingCentral-Call-Generator-Recordings-Downloader
+composer install
+```
+
+to install required dependencies. And you are good to go.
+
 #How to use
 
 Please follow below steps to run the application.
@@ -39,7 +55,7 @@ Log_Level= 0
 
 ```
 
-This application supports 3 log levels, including INFO(0), DEBUG(1) and ERROR(2). So developer/operator could specify what kind of messages goes into log file. Notice that the message types which are no less than the specified value will go into log.
+This application supports 3 log levels, including INFO(0), DEBUG(1) and ERROR(2). So developer/operator could specify what kind of messages goes into log file. Notice that the message types which are not less than the specified value will go into log.
 
 ###RingCentral App Credential
 ```
@@ -71,7 +87,9 @@ Specify the timespan(in seconds) used to fetch call logs at first run of `run_ca
 RC_requestLimit = 30
 RC_requestPool = 1
 ```
-Several factors need to be considered when setting these two variables. More info could be found in `How It Works` section. Bascially, `RC_requestLimit` should be set to `MaxAppRequestLimit - 10`. And make sure that the value of `RC_requestLimit/RC_requestPool` is an integer and less than 20.
+`RC_requestLimit` is the total number of requests the app uses to fetch recordings in 1 min. `RC_requestPool` is the number of processes the app used to fetch and send recordings. So the app uses the value of `RC_requestLimit/RC_requestPool` to determine how many recordings each process will try to fetch and send in 1 min. This implictly adds following constraints on these two variables. 
+- `RC_requestLimit` should be set to `MaxAppRequestLimit - (5 to 10)` since buffer needs to be saved for other types of request, like authorization and fetching call logs. 
+- The value of `RC_requestLimit/RC_requestPool` should be an integer. Considering there could be recordings which are in big file size, so keep this value less than 20 is recommended. 
 
 ###Amazon Account Credentials
 ```
@@ -97,13 +115,13 @@ One type of the cron job is to run `run_calllog.php` to fetch call logs. Recomme
 
 ###Send Recordings
 
-Another type of cron job is to run `run_s3.php` to send recordings to s3. As many as the value of `RC_requestPool` cron jobs need to be setup as follows
+Another type of cron job is to run `run_s3.php` to fetch and send recordings to s3. As many as the value of `RC_requestPool` cron jobs need to be setup as follows
 
 ```
 */1 * * * * cd /home/ec2-user/RingCentral-Call-Generator-Recordings-Downloader && php run_s3.php
 ```
 
-Notice that the execution tiemspan should be set to every 1 min.
+which means that if the value of `RC_requestPool` is 2, you need to setup 2 cron jobs by using this script. And notice that the execution tiemspan should be set to 1 min.
 
 #Monitoring
 
