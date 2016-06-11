@@ -23,6 +23,7 @@ echo "\n";
         $client = S3Client::factory(array(
         'key' => $_ENV['amazonAccessKey'],
         'secret' => $_ENV['amazonSecretKey'],
+        'region' => $_ENV['amazonRegion'],
         'command.params' => ['PathStyle' => true]
         ));
         
@@ -30,7 +31,7 @@ echo "\n";
         $client->registerStreamWrapper();
 
         // create a bucket
-        $client->createBucket(array('Bucket' => 'myRecording'));
+        // $client->createBucket(array('Bucket' => 'myRecording'));
 
         // Constants
         $status = "Success";  
@@ -94,8 +95,9 @@ echo "\n";
 
                 $start = microtime(true);
 
-                $filename = "s3://myRecording/Recordings/${'dateFrom'}/recording_${'recordingID'}.${ext}";
+                $filename = "s3://checkintocashtest/recording_${'recordingID'}.${ext}";
 
+                // $s3FileName = "s3://".$_ENV['amazonS3Bucket'].'/'.$callLog['filePath'].'.'.$recording['ext'];
                 // Write the file to S3 Bucket
                 file_put_contents($filename, $apiResponse->raw());
 

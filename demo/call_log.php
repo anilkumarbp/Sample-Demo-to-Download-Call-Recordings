@@ -65,7 +65,7 @@ try {
             $dateTo = $_ENV['RC_dateTo'] . 'T' . $timeTo;
             // $dateTo = new DateTime($_ENV['RC_dateTo']);
                 
-            $apiResponse = $platform->get('/account/~/call-log', array(
+            $apiResponse = $platform->get('/account/~/extension/~/call-log', array(
             'dateFrom' => $dateFrom,
             'withRecording' => 'True',
             'dateTo' => $dateTo,

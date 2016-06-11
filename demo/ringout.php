@@ -12,7 +12,7 @@ try {
 
 
 		// Constants
-		$timePerRingOut = 60;
+		$timePerRingOut = 6;
 
         // To parse the .env
         $dotenv = new Dotenv\Dotenv(getcwd());
@@ -62,7 +62,7 @@ try {
 			}
 
 			// call announcement queue is active for 45 sec's
-			sleep(45);
+			sleep(2);
 
 			print 'Call Recording:${i} generated.' . PHP_EOL;
 
