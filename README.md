@@ -128,6 +128,8 @@ require(__DIR__ . '/demo/ringout.php');
 Aim : To generate sample call recordings you would need to use the ringout.php file. 
 Pre-requisite : Before you initiate a RingOut, make sure to add a "Announcement-Only-Extension" and associate a digital line / direct line attached to it.
 Make sure to use this number as both the "fromPhoneNumber" and "toPhoneNumber" within the .env file ( /.env )
+
+[How to add an Announcement-Only-Extension](http://success.ringcentral.com/articles/RC_Knowledge_Article/4492)
                 
 ## Pull Down Call-Logs
 

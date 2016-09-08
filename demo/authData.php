@@ -37,7 +37,7 @@ use RingCentral\SDK\SDK;
 		
 		$platform->auth()->setData($cachedAuth);
 
-    	// $platform->refresh();
+    	$platform->refresh();
 
     	print 'Authorization was restored' . PHP_EOL;
 
